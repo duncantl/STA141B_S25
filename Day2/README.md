@@ -19,5 +19,6 @@ Thursday, April 3
    + breakdown of the steps  and corresponding function names
    + validation strategy of the results
    + a description of the `cumsum()` approach
-+ [ncbiFunctions.R](ncbiFunctions.R) - using mapply()
++ [ncbiFunctions.R](ncbiFunctions.R) - using line numbers for start and end of table and mapply() to
+    loop over these pairs of start-end numbers.
 + [ncbiFunctions2.R](ncbiFunctions2.R) - using cumsum()
