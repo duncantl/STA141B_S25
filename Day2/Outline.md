@@ -178,3 +178,34 @@ g = split(ll, cumsum(w3))
    + This is vectorization
 
 
+
+
++ Now that we have 2 implementations, let's compare the results
+
+```
+source("ncbiFunctions.R")
+source("ncbiFunctions2.R")
+z = readNCBITables(f)
+z2 = readNCBITables2(f)
+```
+
+```
+identical(z, z2)
+[1] FALSE
+```
+So they are not identical. Let's call `all.equal()` to see a summary of the differences
+```
+all.equal(z, z2)
+[1] "names for current but not for target"
+```
+This is good. The apparent difference is that `z2` has names on the 2 elements in the list.
+
+Let's verify that the elements are identical
+```
+mapply(identical, z, z2)
+[1] TRUE TRUE
+```
+That's what we want - each element in `z` and `z2` are identical.
+
+
+
