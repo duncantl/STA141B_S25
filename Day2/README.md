@@ -15,6 +15,9 @@ Thursday, April 3
 
 # NCBI
 
-+ See [Outline.md](Outline.md)
++ See [Outline.md](Outline.md) for a 
+   + breakdown of the steps  and corresponding function names
+   + validation strategy of the results
+   + a description of the `cumsum()` approach
 + [ncbiFunctions.R](ncbiFunctions.R) - using mapply()
 + [ncbiFunctions2.R](ncbiFunctions2.R) - using cumsum()
