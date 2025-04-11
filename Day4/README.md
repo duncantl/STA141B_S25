@@ -31,7 +31,9 @@ Analogy: writing an essay.
 Would you start with the .docx file that you were going to submit? 
 
 
-+ Rmd files are clunky for writing code
++ Rmd files are clunky for writing experimental code and functions
+
++ See [RmarkdownUsage.md](RmarkdownUsage.md)
 
 
 ## Why separate Functions and Script Files?
@@ -121,7 +123,7 @@ v = lapply(files, doit)
 
 + Example of repeating code - [RepeatedCode.R](RepeatedCode.R)
 
-# For Loops
+# `for()` Loops
 
 See 
 
@@ -129,6 +131,10 @@ See
 + [dayMonth2.R](dayMonth2.R) - using vectorization 
 + [dayMonth3.R](dayMonth3.R) - slight variation of dayMonth2.R to deal with extra spaces
 + [dayMonth4.R](dayMonth4.R) - slight variation of dayMonth3.R to create the data.frame.
+
+
++ [loops.md](loops.md)
+
 
 ## Complexity
 
