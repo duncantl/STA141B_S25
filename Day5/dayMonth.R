@@ -45,7 +45,8 @@ day_month_hour = function(files, clm_data = readLines(files)){
 #    ans = lapply(ans, as.integer)
     
     names(ans) = c("Day", "Month")
+browser()        
     ans
-browser()
+
 #    data.frame(Day = day, Month = month)
 }
