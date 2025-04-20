@@ -9,6 +9,12 @@ function(file)
     starts = which(substring(ll, 1, 7) == "Query #")
     ends = which(substring(ll, 1, nchar("Alignments:")) == "Alignments:")    
     mapply(readTableBetween, starts, ends, MoreArgs = list(ll), SIMPLIFY = FALSE)
+    # NOT THIS    mapply(readTableBetween, starts, ends,   ll, SIMPLIFY = FALSE)
+    #  This will make starts and ends as long as ll and then have as many calls as there are elements
+    # in ll and we'll have
+    #   readTableBetween(starts[i], ends[i], ll[i])
+    # Very, very different as the start and end values won't make any sense as the value for lines
+    # will be a single string, i.e., a character vector of length.
 }
 
 readTableBetween =
