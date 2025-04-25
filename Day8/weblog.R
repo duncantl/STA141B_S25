@@ -1,3 +1,4 @@
+# Read the lines.
 ll = readLines("../Data/eeyore.log")
 
 # Do all line start with IP address - - [
@@ -25,6 +26,20 @@ w = grepl(rx, ll)
 table(w)
 
 
+# Instead of this 2 step process, we could have extracted the value after the first - and before the next space
+# and then see what they look like to create a pattern
+rx2 = "^[0-9.]+ - ([^ ]+) .*"
+table(gsub(rx2, "\\1", ll))
+
+# Note rx2 carefully. It shows 2 things
+# The part (without ())   '[^ ]+ ' is
+#   match one or more characters which are not a space and then a space.
+# This is a common pattern that is much better than '.+ ' which is to match one or more characters and then a space.
+# That allows for matching the 'abc def' in 'abc def ' because of the second space.
+# But we wanted to stop at the first occurrence of a space.  Hence the '[^ ]+ '
+
+
+
 # Now grow the regular expression
 
 rx = "[0-9.]+ - - \\[[0-9]+/Nov/2015:[0-9]{2}:[0-9]{2}:[0-9]{2} -0800\\]"
@@ -36,20 +51,27 @@ rx = "[0-9.]+ - - \\[[0-9]+/Nov/2015:[0-9]{2}:[0-9]{2}:[0-9]{2} -0800\\]"
 
 rx = "^[0-9.]+ - (-|[a-z0-9]+) \\[[^]]+\\] "
 
+# What is this doing.
+# \\[  to match a literal [ since [ would ordinarily be the start of a character set.
+#  Same for the ending \\]
+# The bit in between is [^]]+ and this is like the [^ ]+ which is match one or more
+# characters that are not ] and then we add the \\] so we stop at the first occurrence
+# of ]
+
+# Why didn't we have to escape the ] in [^]] ?
+# Didn't have to escape the first ] since it the regular expression recognizes
+# the [^ must have a character asn [^] to end the character set would mean nothing - everything except nothing.
+# But we could have escaped it.
+
 # Let's add () to each part we match as we will want to refer to the capture groups.
 
 rx = "^([0-9.]+) - (-|[a-z0-9]+) \\[([^]]+)\\] "
-
 #                                   ^^^^^^^
-# Why did we escape the [ and ]
-# Why not the other [ ]
-# Note the [^]]
-# Didn't have to escape the first ] since had context. But we could have escaped it.
-# 
 
+# Check we still match
 w = grepl(rx, ll)
 
-# We should check that we are matching the parts correctly.
+# We should check that we are matching the parts correctly, not just matching overall.
 
 # Let's figure out how to extract the matched parts in each line.
 
@@ -65,6 +87,9 @@ table(sapply(els, length))
 els[[1]]
 
 # So we are keeping the remainder of each line after the third match.
+# This is because we are only replacing the bits that matched and leaving the rest.
+# So we can separate the remainder by adding ;;; after the 3rd capture group and so before
+# the remaining part we didn't explicit match.
 
 tmp = gsub(rx, "\\1;;;\\2;;;\\3;;;", ll)
 els = strsplit(tmp, ";;;")
@@ -82,18 +107,16 @@ tm = sapply(els, `[`, 3)
 head(tm)
 
 tm2 = strptime(tm, "%d/%b/%Y:%H:%M:%S")
+class(tm2)
 head(tm2)
 
 # Did strptime() figure out the PST or just use my computer's current setting?
 # Or do we need to tell it about the -0800
-
 table(is.na(tm2))
 
-class(tm2)
 # What's this POSIXlt, POSIXt ?
 # What happens when an object has 2 classes - i.e., a vector 2
-# 
-
+ 
 
 # Grow the rx for the next part -
 #   the "GET /........ HTTP/1.1"
@@ -107,7 +130,7 @@ ll[!w]
 # Only 91 that don't match.
 # What are the alternatives?
 # If we have information about what to expect, we could build that in.
-# Otherwise, discover it.
+# Otherwise, discover it from the data.
 
 # Let's find the parts that are after the bit we matched earlier
 
@@ -122,6 +145,7 @@ rx = '^([0-9.]+) - (-|[a-z0-9]+) \\[([^]]+)\\] "([^ ]+ ).*'
 w = grepl(rx, ll)
 table(w)
 
+# Now get just the 4th capture group
 table(gsub(rx, "\\4", ll))
 
 # Nobody expected the HBESPY or WFZWXO !
@@ -130,31 +154,40 @@ table(gsub(rx, "\\4", ll))
 # or perhaps all capitals.
 
 
-#
-rx = '^([0-9.]+) - (-|[a-z0-9]+) \\[([^]]+)\\] "([^ ]+ ).*'
-table(gsub(rx, "\\4", ll))
+# Many iterations to get the next parts.
 
 
-
-
-# FINAL
+# FINAL rx
 
 # This doesn't get the browser part as we can only reference capture groups 1 to 9 
 #       IP       -   login          date-time    HTTP OP  path          version    status   size       referer   browser
 rx = '^([0-9.]+) - (-|[a-z0-9]+) \\[([^]]+)\\] "([A-Z]+) ([^ ]+) HTTP/(1\\.[01])" ([0-9]+) (-|[0-9]+) "([^"]*)" "([^"]*)"'
 
+# Create the substitute string to include each of the capture groups and separated by some
+# string that does not occur in any of the text. Then we can use that to strsplit()
+
+# We'll use ;;; but we can check this never occurs.
+stopifnot(!any(grepl(";;;", ll)))
+
 
 rx.sub = "\\1;;;\\2;;;\\3;;;\\4;;;\\5;;;\\6;;;\\7;;;\\8;;;\\9"
+# BTW, easier way to create the substitute string than type it ourselves.
+rx.sub = paste(paste0("\\", 1:9), collapse = ";;;")
+
+
 tmp = gsub(rx, rx.sub, ll)
 tmp2 = strsplit(tmp, ";;;")
 table(sapply(tmp2, length))
+# There is one that has 8 elements, and all the rest 9.
+
+# Look at this line and the ones before and after it.
 i = which(sapply(tmp2, length) == 8)
+ll[(i-1):(i+1)]
+# And the separated elements.
 tmp[(i-1):(i+1)]
 
-ll[(i-1):(i+1)]
-
-# Doesn't have a value in the referer.
-# So it is the last element of the line.
+# So this doesn't have a value in the referer.
+# So it is the last element of our substitute line.
 #
 # 2 approaches.
 #  Add an NA for that element
@@ -169,70 +202,63 @@ tmp = gsub(rx, rx.sub, ll)
 tmp2 = strsplit(tmp, ";;;")
 table(sapply(tmp2, length))
 
+
 #Now stack
-df = do.call(rbind, tmp2)
-
-tmp3 = gsub('(^"|"$)', '', df[,9])
-table(grepl('^"', tmp3))
+df = as.data.frame( do.call(rbind, tmp2) )
+names(df) = c("IP", "login", "datetime", "operation", "path", "HTTPVersion", "status", "bytes", "referrer")
 
 
-
-# BTW, easier way to create the substitute string.
-rx.sub = paste(paste0("\\", 1:9), collapse = ";;;")
-
-
-# How to get all 10 capture groups from each match.
-# (?P<name>pattern)
-
-
-m = gregexpr(rx, ll, perl = TRUE)
-
-
-m[[1]]
-nchar(ll[1])
-# So matched entire string.
-
-# Look at the attributes named capture.start and capture.length
-
-s = attr(m[[1]], "capture.start")
-l = attr(m[[1]], "capture.length")
-
-substring(ll[1], s, s+l)
+# If we used approach 2, we'd have to remove the " at the start and end of the 9th element.
+any(grepl('^"', df[,9]))
+tmp = gsub('(^"|"$)', "", df[,9])
+any(grepl('^"', tmp))
+df[,9] = tmp
 
 
 
+# We couldn't include the 10th capture group for the useragent/browser because \\10 would be
+# read as \\1 followed by a 0.
+# There are named capture groups.
+# But we will simply change rx to remove, for example, the 1st () group (for the IP address) and
+# then the useragent group will be number 9.
+
+rx = '^[0-9.]+ - (-|[a-z0-9]+) \\[([^]]+)\\] "([A-Z]+) ([^ ]+) HTTP/(1\\.[01])" ([0-9]+) (-|[0-9]+) ("[^"]*") "([^"]*)"'
+# Compare this with the previous version.
+tmp = gsub(rx, "\\9", ll)
+head(tmp)
+length(unique(tmp))
+
+df$useragent = tmp
 
 
-
-#
-
+# Now we can convert/transform some of the comments.
 
 
-df = getCaptures(rx, ll, row.names = NULL)
+# We'll check if the status and bytes can be considered integer values.
+isInteger =
+function(x)
+   grepl("^[0-9]+$", x)
 
+sapply(df[c("status", "bytes")], function(x) all(isInteger(x)))
 
-names(df) = c("IP", "login", "datetime", "operation", "path", "HTTPVersion", "status", "bytes", "referrer", "useragent")
+# all true for status, but not bytes
 
-# Check the bytes are all digits
-w2 = grepl("^[0-9]+$", df$bytes)
-table(w2)
+table(df$bytes[ !isInteger(df$bytes) ])
 
-table(df$bytes[!w2])
+# All -  so we can convert all of them via as.integer() and will get NAs for the -
 
-table(df$status, w2)
-# So 239 with status 200 but - as the number of bytes.
-# Investigate.
+int = c("status", "bytes")
+df[int] = lapply(df[int], as.integer)
 
-df$bytes = as.integer(df$bytes)
+# The warnings of NAs introduced are okay.
 
-
+# Now convert the datetime as we did above.
 tmp = as.POSIXct(strptime(df$datetime, "%d/%b/%Y:%H:%M:%S"))
 table(is.na(tmp))
 head(tmp)
 df$datetime = tmp
 
 
-table(df$status)
 
 
 
