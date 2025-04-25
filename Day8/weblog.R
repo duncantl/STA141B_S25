@@ -252,14 +252,28 @@ df[int] = lapply(df[int], as.integer)
 
 # The warnings of NAs introduced are okay.
 
+
 # Now convert the datetime as we did above.
 tmp = as.POSIXct(strptime(df$datetime, "%d/%b/%Y:%H:%M:%S"))
 table(is.na(tmp))
 head(tmp)
 df$datetime = tmp
 
+range(df$datetime)
 
 
+# Now convert the version which should be a numeric, and really 1.0 or 1.1 
+
+table(grepl("^[0-9]\\.[0-9]$", df$HTTPVersion))
+
+# These are all TRUE, so
+
+df$HTTPVersion = as.numeric(df$HTTPVersion)
 
 
+# Now check
+class(df)
+dim(df)
+sapply(df, class)
+summary(df)
 
