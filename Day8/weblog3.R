@@ -1,5 +1,6 @@
 ll = readLines("../Data/eeyore.log")
 # We could try to split by space
+# We'll have to reassemble different parts into single variables.
 
 # While we will be able to make this work in this specific case,
 # it is very fragile, i.e., not robust.
