@@ -99,6 +99,6 @@ If you want them to treat a collection of strings as a single block, use `paste(
 
 
 
-+ Wireless data
-+ Web server log
++ [Wireless data](../Data/offline)
++ [Web server log](../Data/eeyore.log)
 + Robot logs
