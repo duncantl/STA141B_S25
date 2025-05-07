@@ -76,27 +76,28 @@ Piazza [link](https://piazza.com/class/m8vu0p011kn5a2)
    + [Summary of single table operations](Day11/Overview.md)
 
 + [Day 12](Day12) (05/08)
-
+  + [README.md](Day12/README.md)
 
 + [Day 13](Day13) (05/13)
-
+  + [README.md](Day13/README.md)
 
 + [Day 14](Day14) (05/15)
-
+  + [README.md](Day14/README.md)
 
 + [Day 15](Day15) (05/20)
-
+  + [README.md](Day15/README.md)
 
 + [Day 16](Day16) (05/22)
-
+  + [README.md](Day16/README.md)
 
 + [Day 17](Day17) (05/27)
-
+  + [README.md](Day17/README.md)
 
 + [Day 18](Day18) (05/29)
-
+  + [README.md](Day18/README.md)
 
 + [Day 19](Day19) (06/03)
-
+  + [README.md](Day19/README.md)
 
 + [Day 20](Day20) (06/05)
+  + [README.md](Day20/README.md)
