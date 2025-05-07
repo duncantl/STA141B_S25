@@ -1,0 +1,9 @@
+
+
+To include the code for the functions in the Rmarkdown file, use the following approach
+````{r, file = "functions.R"}
+```
+
+This is as if you had insert the contents of functions.R directly into the chunk.
+
+
