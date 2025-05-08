@@ -12,7 +12,11 @@
 + HAVING and GROUP BY
 
 + Multiple tables
-+ INNER JOIN
-+ LEFT JOIN
+
++ Joins
+   + INNER JOIN
+   + LEFT JOIN
+   + See slides and [joins.md](joins.md)
+
 
 
