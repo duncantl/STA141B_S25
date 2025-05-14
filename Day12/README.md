@@ -19,4 +19,6 @@
    + See slides and [joins.md](joins.md)
 
 
++ [Slides](dbms2.html)
+   + up to page 42.
 
