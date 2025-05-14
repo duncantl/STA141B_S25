@@ -1,5 +1,7 @@
 # Day13
 
++ [convenience R functions for working with a database](db.R)
+
 + How to validate or check results from SQL
    + See [Rsession](Rsession)
 
