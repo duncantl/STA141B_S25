@@ -1,0 +1,532 @@
+]0;Day12~/Classes/Davis/STA141B_24_25/Public/Day12> R
+
+R Under development (unstable) (2025-03-26 r88055) -- "Unsuffered Consequences"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin23.6.0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+PID = 91044 
+Time = 2025-05-13 10:31:38 
+Dir = /Users/duncan/Classes/Davis/STA141B_24_25/Public/Day12 
+1> library(RSQLite)
+[31:45] 2> db = dbConnect(SQLite(), "../lahman_1871-2022.sqlite")
+[32:14] 3> fn = dbConnect(SQLite(), "../fang.sqlite")
+[32:26] 4> dbListTables(db)
+character(0)
+[36:13] 5> db = dbConnect(SQLite(), "../Data/lahman_1871-2022.sqlite")
+[36:21] 6> dbListTables(db)
+ [1] "AllstarFull"         "Appearances"         "AwardsManagers"      "AwardsPlayers"       "AwardsShareManagers" "AwardsSharePlayers"  "Batting"             "BattingPost"         "CollegePlaying"      "Fielding"           
+[11] "FieldingOF"          "FieldingOFsplit"     "FieldingPost"        "HallOfFame"          "HomeGames"           "Managers"            "ManagersHalf"        "Parks"               "People"              "Pitching"           
+[21] "PitchingPost"        "Salaries"            "Schools"             "SeriesPost"          "Teams"               "TeamsFranchises"     "TeamsHalf"          
+[36:27] 7> options(width = 70)
+[36:31] 8> dbListTables(db)
+ [1] "AllstarFull"         "Appearances"         "AwardsManagers"     
+ [4] "AwardsPlayers"       "AwardsShareManagers" "AwardsSharePlayers" 
+ [7] "Batting"             "BattingPost"         "CollegePlaying"     
+[10] "Fielding"            "FieldingOF"          "FieldingOFsplit"    
+[13] "FieldingPost"        "HallOfFame"          "HomeGames"          
+[16] "Managers"            "ManagersHalf"        "Parks"              
+[19] "People"              "Pitching"            "PitchingPost"       
+[22] "Salaries"            "Schools"             "SeriesPost"         
+[25] "Teams"               "TeamsFranchises"     "TeamsHalf"          
+[36:32] 9> source("../../Assignments/DBMS/db.R")
+[39:12] 10> ls()
+ [1] "$.SQLiteConnection" "db"                 "fn"                
+ [4] "getSQL"             "getTable"           "getTableInfo"      
+ [7] "getTables"          "PRMGateway"         "PRMGatewayProd"    
+[10] "query"              "sql"               
+[39:14] 11> head(db$People)
+  ID  playerID birthYear birthMonth birthDay  birthCity birthCountry
+1  1 aardsda01      1981         12       27     Denver          USA
+2  2 aaronha01      1934          2        5     Mobile          USA
+3  3 aaronto01      1939          8        5     Mobile          USA
+4  4  aasedo01      1954          9        8     Orange          USA
+5  5  abadan01      1972          8       25 Palm Beach          USA
+6  6  abadfe01      1985         12       17  La Romana         D.R.
+  birthState deathYear deathMonth deathDay deathCountry deathState
+1         CO      <NA>       <NA>     <NA>         <NA>       <NA>
+2         AL      2021          1       22          USA         GA
+3         AL      1984          8       16          USA         GA
+4         CA      <NA>       <NA>     <NA>         <NA>       <NA>
+5         FL      <NA>       <NA>     <NA>         <NA>       <NA>
+6  La Romana      <NA>       <NA>     <NA>         <NA>       <NA>
+  deathCity nameFirst nameLast        nameGiven weight height bats
+1      <NA>     David  Aardsma      David Allan    215     75    R
+2   Atlanta      Hank    Aaron      Henry Louis    180     72    R
+3   Atlanta    Tommie    Aaron       Tommie Lee    190     75    R
+4      <NA>       Don     Aase   Donald William    190     75    R
+5      <NA>      Andy     Abad    Fausto Andres    184     73    L
+6      <NA>  Fernando     Abad Fernando Antonio    235     74    L
+  throws      debut   bbrefID  finalGame  retroID
+1      R 2004-04-06 aardsda01 2015-08-23 aardd001
+2      R 1954-04-13 aaronha01 1976-10-03 aaroh101
+3      R 1962-04-10 aaronto01 1971-09-26 aarot101
+4      R 1977-07-26  aasedo01 1990-10-03 aased001
+5      L 2001-09-10  abadan01 2006-04-13 abada001
+6      L 2010-07-28  abadfe01 2021-10-01 abadf001
+[39:36] 12> names(db$People)
+ [1] "ID"           "playerID"     "birthYear"    "birthMonth"  
+ [5] "birthDay"     "birthCity"    "birthCountry" "birthState"  
+ [9] "deathYear"    "deathMonth"   "deathDay"     "deathCountry"
+[13] "deathState"   "deathCity"    "nameFirst"    "nameLast"    
+[17] "nameGiven"    "weight"       "height"       "bats"        
+[21] "throws"       "debut"        "bbrefID"      "finalGame"   
+[25] "retroID"     
+[40:48] 13> any(duplicated(db$People$playerID))
+[1] FALSE
+[41:46] 14> head(db$College)
+   playerID schoolID yearID
+1 aardsda01   pennst   2001
+2 aardsda01     rice   2002
+3 aardsda01     rice   2003
+4  abadan01  gamiddl   1992
+5  abadan01  gamiddl   1993
+6 abbeybe01  vermont   1889
+[43:07] 15> dbListTables(db)
+ [1] "AllstarFull"         "Appearances"         "AwardsManagers"     
+ [4] "AwardsPlayers"       "AwardsShareManagers" "AwardsSharePlayers" 
+ [7] "Batting"             "BattingPost"         "CollegePlaying"     
+[10] "Fielding"            "FieldingOF"          "FieldingOFsplit"    
+[13] "FieldingPost"        "HallOfFame"          "HomeGames"          
+[16] "Managers"            "ManagersHalf"        "Parks"              
+[19] "People"              "Pitching"            "PitchingPost"       
+[22] "Salaries"            "Schools"             "SeriesPost"         
+[25] "Teams"               "TeamsFranchises"     "TeamsHalf"          
+[43:34] 16> head(db$Schools)
+    schoolID                    name_full        city state country
+1 abilchrist Abilene Christian University     Abilene    TX     USA
+2    adelphi           Adelphi University Garden City    NY     USA
+3   adrianmi               Adrian College      Adrian    MI     USA
+4      akron          University of Akron       Akron    OH     USA
+5    alabama        University of Alabama  Tuscaloosa    AL     USA
+6  alabamaam       Alabama A&M University      Normal    AL     USA
+[43:53] 17> table(db$College$schoolId %in% db$Schools$schoolID)
+< table of extent 0 >
+[44:30] 18> table(db$College$schoolID %in% db$Schools$schoolID)
+
+FALSE  TRUE 
+   10 17340 
+[44:49] 19> w = (db$College$schoolID %in% db$Schools$schoolID)
+[45:08] 20> db$College[!w,]
+       playerID schoolID yearID
+5171  frascjo01  ctpostu   1989
+5172  frascjo01  ctpostu   1990
+5173  frascjo01  ctpostu   1991
+5467  gattiev01  txutper   2010
+10708 mooredo01  txrange   1973
+13768 scheiri01  ctpostu   1962
+13769 scheiri01  ctpostu   1963
+13770 scheiri01  ctpostu   1964
+17074 woodsdi01  caallia   1964
+17075 woodsdi01  caallia   1965
+[45:28] 21> unique(db$College$schoolID[!w]
++ )
+[1] "ctpostu" "txutper" "txrange" "caallia"
+[46:26] 22> grep("Long Beach",  db$Schools$name_full)
+[1] 147 550
+[48:10] 23> i = grep("Long Beach",  db$Schools$name_full)
+[48:20] 24> db$Schools[i,]
+     schoolID                              name_full       city state
+147   calobcc                Long Beach City College Long Beach    CA
+550 longbeach California State University Long Beach Long Beach    CA
+    country
+147     USA
+550     USA
+[48:39] 25> w = db$College$schoolID == "longbeach"
+[49:25] 26> table(w)
+w
+FALSE  TRUE 
+17254    96 
+[49:28] 27> db$College[w,]
+       playerID  schoolID yearID
+18    abbotky01 longbeach   1989
+135   alvarab01 longbeach   2001
+136   alvarab01 longbeach   2002
+137   alvarab01 longbeach   2003
+923   bearega01 longbeach   1973
+924   bearega01 longbeach   1974
+1083  bentzch01 longbeach   2000
+1084  bentzch01 longbeach   2001
+1194  biddlro01 longbeach   1995
+1195  biddlro01 longbeach   1996
+1196  biddlro01 longbeach   1997
+1564  bowkejo01 longbeach   2002
+1565  bowkejo01 longbeach   2003
+1566  bowkejo01 longbeach   2004
+2427  carpean01 longbeach   2006
+3139  cooksbr01 longbeach   1990
+3140  cooksbr01 longbeach   1991
+3434  crosbbo01 longbeach   1999
+3435  crosbbo01 longbeach   2000
+3436  crosbbo01 longbeach   2001
+3701  davisbr03 longbeach   2002
+3702  davisbr03 longbeach   2003
+3703  davisbr03 longbeach   2004
+3856  demarch01 longbeach   2001
+3857  demarch01 longbeach   2002
+4065  dobbsgr01 longbeach   1999
+4622  espinda01 longbeach   2006
+4623  espinda01 longbeach   2007
+4624  espinda01 longbeach   2008
+4648  estrama01 longbeach   2005
+5353  gallomi01 longbeach   1997
+5354  gallomi01 longbeach   1998
+5355  gallomi01 longbeach   1999
+5445  gasparo01 longbeach   1966
+5548  giambja01 longbeach   1990
+5549  giambja01 longbeach   1991
+5550  giambja01 longbeach   1992
+5783  gomezch02 longbeach   1992
+5793  gonzaga01 longbeach   1992
+5794  gonzaga01 longbeach   1993
+5795  gonzaga01 longbeach   1994
+5796  gonzaga01 longbeach   1995
+7315  hugheja02 longbeach   2005
+7316  hugheja02 longbeach   2006
+7807  jonesma02 longbeach   1994
+7808  jonesma02 longbeach   1995
+7809  jonesma02 longbeach   1996
+7810  jonesma02 longbeach   1997
+8990  liefeje01 longbeach   1993
+8991  liefeje01 longbeach   1994
+8992  liefeje01 longbeach   1995
+9150  longoev01 longbeach   2005
+9151  longoev01 longbeach   2006
+9865  mcanupa01 longbeach   2002
+10615 moffira01 longbeach   1968
+10616 moffira01 longbeach   1969
+10948 munizca01 longbeach   2002
+10949 munizca01 longbeach   2003
+11201   nendi01 longbeach   1960
+12105 petersh01 longbeach   2006
+12106 petersh01 longbeach   2007
+12107 petersh01 longbeach   2008
+12615 ramosce01 longbeach   2003
+12616 ramosce01 longbeach   2004
+12617 ramosce01 longbeach   2005
+12785  reedje03 longbeach   2000
+12786  reedje03 longbeach   2001
+12787  reedje03 longbeach   2002
+14107  shawbr01 longbeach   2006
+14108  shawbr01 longbeach   2007
+14109  shawbr01 longbeach   2008
+14170 shermda02 longbeach   1989
+14383 sledgte01 longbeach   1998
+14384 sledgte01 longbeach   1999
+14489 smithji02 longbeach   1974
+14490 smithji02 longbeach   1975
+14491 smithji02 longbeach   1976
+15401 terdojo01 longbeach   2010
+15571 throoge01 longbeach   1972
+15696 trachst01 longbeach   1991
+15776 tulowtr01 longbeach   2003
+15777 tulowtr01 longbeach   2004
+15778 tulowtr01 longbeach   2005
+15873 urbanto01 longbeach   1989
+15874 urbanto01 longbeach   1990
+15943 vargaja01 longbeach   2004
+16053 vinceni01 longbeach   2008
+16414 weaveje02 longbeach   2002
+16415 weaveje02 longbeach   2003
+16416 weaveje02 longbeach   2004
+16702  wilkad01 longbeach   2007
+16703  wilkad01 longbeach   2008
+16704  wilkad01 longbeach   2009
+17112 worleva01 longbeach   2006
+17113 worleva01 longbeach   2007
+17114 worleva01 longbeach   2008
+[50:16] 28> z = db$College[ w & db$College$yearID >= 2000,]
+Warning message:
+call dbDisconnect() when finished working with a connection 
+[51:15] 29> dim(z)
+[1] 54  3
+[51:19] 30> z
+       playerID  schoolID yearID
+135   alvarab01 longbeach   2001
+136   alvarab01 longbeach   2002
+137   alvarab01 longbeach   2003
+1083  bentzch01 longbeach   2000
+1084  bentzch01 longbeach   2001
+1564  bowkejo01 longbeach   2002
+1565  bowkejo01 longbeach   2003
+1566  bowkejo01 longbeach   2004
+2427  carpean01 longbeach   2006
+3435  crosbbo01 longbeach   2000
+3436  crosbbo01 longbeach   2001
+3701  davisbr03 longbeach   2002
+3702  davisbr03 longbeach   2003
+3703  davisbr03 longbeach   2004
+3856  demarch01 longbeach   2001
+3857  demarch01 longbeach   2002
+4622  espinda01 longbeach   2006
+4623  espinda01 longbeach   2007
+4624  espinda01 longbeach   2008
+4648  estrama01 longbeach   2005
+7315  hugheja02 longbeach   2005
+7316  hugheja02 longbeach   2006
+9150  longoev01 longbeach   2005
+9151  longoev01 longbeach   2006
+9865  mcanupa01 longbeach   2002
+10948 munizca01 longbeach   2002
+10949 munizca01 longbeach   2003
+12105 petersh01 longbeach   2006
+12106 petersh01 longbeach   2007
+12107 petersh01 longbeach   2008
+12615 ramosce01 longbeach   2003
+12616 ramosce01 longbeach   2004
+12617 ramosce01 longbeach   2005
+12785  reedje03 longbeach   2000
+12786  reedje03 longbeach   2001
+12787  reedje03 longbeach   2002
+14107  shawbr01 longbeach   2006
+14108  shawbr01 longbeach   2007
+14109  shawbr01 longbeach   2008
+15401 terdojo01 longbeach   2010
+15776 tulowtr01 longbeach   2003
+15777 tulowtr01 longbeach   2004
+15778 tulowtr01 longbeach   2005
+15943 vargaja01 longbeach   2004
+16053 vinceni01 longbeach   2008
+16414 weaveje02 longbeach   2002
+16415 weaveje02 longbeach   2003
+16416 weaveje02 longbeach   2004
+16702  wilkad01 longbeach   2007
+16703  wilkad01 longbeach   2008
+16704  wilkad01 longbeach   2009
+17112 worleva01 longbeach   2006
+17113 worleva01 longbeach   2007
+17114 worleva01 longbeach   2008
+[51:21] 31> length(unique(z$playerID))
+[1] 24
+[51:51] 32> cp = db$CollegePlaying
+[54:37] 33> w = cp$yearID >= 2000
+[57:23] 34> cp2000 = cp[w,]
+[58:32] 35> g = split(cp2000$playerID, cp2000$schoolID)
+[07:25] 36> g[[1]]
+[1] "malasma01"
+[07:28] 37> g[[2]]
+ [1] "avilaal01" "avilaal01" "avilaal01" "brownje02" "brownje02"
+ [6] "brownje02" "cormila01" "cormila01" "cormila01" "downsma01"
+[11] "downsma01" "downsma01" "hunteto02" "hunteto02" "leblawa01"
+[16] "leblawa01" "leblawa01" "nelsoji02" "nelsoji02" "nelsoji02"
+[21] "roberda08" "roberda08" "rutlejo01" "rutlejo01" "rutlejo01"
+[26] "tanketa01" "tanketa01" "tanketa01"
+[08:38] 38> np = sapply(g, function(x) length(unique(x)))
+[09:10] 39> head(sort(np, decreasing = TRUE), 20)
+ longbeach  arizonast   stanford        lsu      texas  calstfull 
+        24         23         22         21         19         17 
+   miamifl  scarolina     gatech   nebraska    okstate       rice 
+        17         17         16         16         16         16 
+       unc    arizona california        usc       ucla     tulane 
+        16         15         15         15         14         13 
+   florida    texasam 
+        12         12 
+[09:26] 40> #dbConnect(SQLite(), "~/Data/stats.stackexchange.db")
+[09:26] 40> file.infi( "~/Data/stats.stackexchange.db")
+Error in file.infi("~/Data/stats.stackexchange.db") : 
+  could not find function "file.infi"
+No suitable frames for recover()
+[09:26] 40> file.info( "~/Data/stats.stackexchange.db")
+                              size isdir mode mtime ctime atime uid
+~/Data/stats.stackexchange.db   NA    NA <NA>  <NA>  <NA>  <NA>  NA
+                              gid uname grname
+~/Data/stats.stackexchange.db  NA  <NA>   <NA>
+[32:02] 41> db =  dbConnect(SQLite(), "~/Classes/Davis/STA141B_23_24/Assignments/StackOverflow/DBMS/stats.stackexchange.db")
+[33:09] 42> dbListTables(db)
+ [1] "BadgeClassMap"     "Badges"            "CloseReasonMap"   
+ [4] "Comments"          "LinkTypeMap"       "PostHistory"      
+ [7] "PostHistoryTypeId" "PostLinks"         "PostTypeIdMap"    
+[10] "Posts"             "TagPosts"          "Users"            
+[13] "VoteTypeMap"       "Votes"            
+[33:31] 43> dim(db$VoteTypeMap)
+[1] 14  2
+[39:25] 44> dbGetQuery(db$Posts, "SELECT COUNT(*) FROM Posts")
+Error: unable to find an inherited method for function ‘dbGetQuery’ for signature ‘conn = "data.frame", statement = "character"’
+In addition: Warning messages:
+1: In result_fetch(res@ptr, n = n) :
+  Column `AcceptedAnswerId`: mixed type, first seen values of type integer, coercing other values of type string
+2: In result_fetch(res@ptr, n = n) :
+  Column `ViewCount`: mixed type, first seen values of type integer, coercing other values of type string
+3: In result_fetch(res@ptr, n = n) :
+  Column `OwnerUserId`: mixed type, first seen values of type integer, coercing other values of type string
+4: In result_fetch(res@ptr, n = n) :
+  Column `AnswerCount`: mixed type, first seen values of type integer, coercing other values of type string
+5: In result_fetch(res@ptr, n = n) :
+  Column `LastEditorUserId`: mixed type, first seen values of type string, coercing other values of type integer
+6: In result_fetch(res@ptr, n = n) :
+  Column `ParentId`: mixed type, first seen values of type string, coercing other values of type integer
+7: In result_fetch(res@ptr, n = n) :
+  Column `FavoriteCount`: mixed type, first seen values of type string, coercing other values of type integer
+
+Enter a frame number, or 0 to exit   
+
+1: dbGetQuery(db$Posts, "SELECT COUNT(*) FROM Posts")
+2: (function (classes, fdef, mtable) 
+{
+    methods <- .findInheritedM
+
+Selection: x
+Enter an item from the menu, or 0 to exit
+Selection: 0
+[39:25] 44> dbGetQuery(db, "SELECT COUNT(*) FROM Posts")
+  COUNT(*)
+1   405220
+[40:07] 45> dbListFields(db, "Posts")
+ [1] "Id"                    "PostTypeId"           
+ [3] "AcceptedAnswerId"      "CreationDate"         
+ [5] "Score"                 "ViewCount"            
+ [7] "Body"                  "OwnerUserId"          
+ [9] "LastActivityDate"      "Title"                
+[11] "Tags"                  "AnswerCount"          
+[13] "CommentCount"          "ContentLicense"       
+[15] "LastEditorDisplayName" "LastEditDate"         
+[17] "LastEditorUserId"      "CommunityOwnedDate"   
+[19] "ParentId"              "OwnerDisplayName"     
+[21] "ClosedDate"            "FavoriteCount"        
+[40:58] 46> d$PostTypeMap
+Error: object 'd' not found
+No suitable frames for recover()
+[40:58] 46> 
+Selection: 0
+[40:58] 46> db$PostTypeIdMap
+  id                                                        value
+1  1                                                     Question
+2  2                                                       Answer
+3  3                                            Orphaned tag wiki
+4  4                                             Tag wiki excerpt
+5  5                                                     Tag wiki
+6  6                                         Moderator nomination
+7  7 Wiki placeholder (seems to only be the election description)
+8  8                                               Privilege wiki
+[41:39] 47> dbListTables(db)
+ [1] "BadgeClassMap"     "Badges"            "CloseReasonMap"   
+ [4] "Comments"          "LinkTypeMap"       "PostHistory"      
+ [7] "PostHistoryTypeId" "PostLinks"         "PostTypeIdMap"    
+[10] "Posts"             "TagPosts"          "Users"            
+[13] "VoteTypeMap"       "Votes"            
+[42:11] 48> dbListFields(db, "Comments")
+[1] "Id"              "PostId"          "Score"          
+[4] "Text"            "CreationDate"    "UserId"         
+[7] "ContentLicense"  "UserDisplayName"
+[42:37] 49> db1 = dbConnect(SQLite(), "../Data/lahman_1871-2022.sqlite")
+[14:54] 50> dbListFields(db1, "AllstarFull")
+[1] "playerID"    "yearID"      "gameNum"     "gameID"     
+[5] "teamID"      "lgID"        "GP"          "startingPos"
+[15:08] 51> head(db1$Allstar)
+   playerID yearID gameNum       gameID teamID lgID GP startingPos
+1 gomezle01   1933       0 ALS193307060    NYA   AL  1           1
+2 ferreri01   1933       0 ALS193307060    BOS   AL  1           2
+3 gehrilo01   1933       0 ALS193307060    NYA   AL  1           3
+4 gehrich01   1933       0 ALS193307060    DET   AL  1           4
+5 dykesji01   1933       0 ALS193307060    CHA   AL  1           5
+6 cronijo01   1933       0 ALS193307060    WS1   AL  1           6
+[15:20] 52> dbListTables(db1)
+ [1] "AllstarFull"         "Appearances"         "AwardsManagers"     
+ [4] "AwardsPlayers"       "AwardsShareManagers" "AwardsSharePlayers" 
+ [7] "Batting"             "BattingPost"         "CollegePlaying"     
+[10] "Fielding"            "FieldingOF"          "FieldingOFsplit"    
+[13] "FieldingPost"        "HallOfFame"          "HomeGames"          
+[16] "Managers"            "ManagersHalf"        "Parks"              
+[19] "People"              "Pitching"            "PitchingPost"       
+[22] "Salaries"            "Schools"             "SeriesPost"         
+[25] "Teams"               "TeamsFranchises"     "TeamsHalf"          
+[31:57] 53> m = db1$Managers
+[32:12] 54> names(m)
+ [1] "playerID" "yearID"   "teamID"   "lgID"     "inseason" "G"       
+ [7] "W"        "L"        "rank"     "plyrMgr" 
+[32:14] 55> p = db1$People
+[32:24] 56> w = m$playerID %in% p$playerID
+[32:50] 57> table(w)
+w
+TRUE 
+3718 
+[32:51] 58> names(db1$SeriesPost)
+[1] "yearID"       "round"        "teamIDwinner" "lgIDwinner"  
+[5] "teamIDloser"  "lgIDloser"    "wins"         "losses"      
+[9] "ties"        
+[34:55] 59> head(db1$SeriesPost, 20)
+   yearID round teamIDwinner lgIDwinner teamIDloser lgIDloser wins
+1    1884    WS          PRO         NL         NY4        AA    3
+2    1885    WS          CHN         NL         SL4        AA    3
+3    1886    WS          SL4         AA         CHN        NL    4
+4    1887    WS          DTN         NL         SL4        AA   10
+5    1888    WS          NY1         NL         SL4        AA    6
+6    1889    WS          NY1         NL         BR3        AA    6
+7    1890    WS          BRO         NL         LS2        AA    3
+8    1892    CS          BSN         NL         CL4        NL    5
+9    1903    WS          BOS         AL         PIT        NL    5
+10   1905    WS          NY1         NL         PHA        AL    4
+11   1906    WS          CHA         AL         CHN        NL    4
+12   1907    WS          CHN         NL         DET        AL    4
+13   1908    WS          CHN         NL         DET        AL    4
+14   1909    WS          PIT         NL         DET        AL    4
+15   1910    WS          PHA         AL         CHN        NL    4
+16   1911    WS          PHA         AL         NY1        NL    4
+17   1912    WS          BOS         AL         NY1        NL    4
+18   1913    WS          PHA         AL         NY1        NL    4
+19   1914    WS          BSN         NL         PHA        AL    4
+20   1915    WS          BOS         AL         PHI        NL    4
+   losses ties
+1       0    0
+2       3    1
+3       2    0
+4       5    0
+5       4    0
+6       3    0
+7       3    1
+8       0    1
+9       3    0
+10      1    0
+11      2    0
+12      0    0
+13      1    0
+14      3    0
+15      1    0
+16      2    0
+17      3    0
+18      1    0
+19      0    0
+20      1    0
+[35:14] 60> t = db1$Teams
+[37:12] 61> table(is.na(divID))
+Error: object 'divID' not found
+
+Enter a frame number, or 0 to exit   
+
+1: table(is.na(divID))
+
+Selection: 0
+[37:12] 61> table(is.na(t$divID))
+
+FALSE  TRUE 
+ 1498  1517 
+[37:24] 62> table(t$yearID[is.na(t$divID)])
+
+1871 1872 1873 1874 1875 1876 1877 1878 1879 1880 1881 1882 1883 1884 
+   9   11    9    8   13    8    6    6    8    8    8   14   16   33 
+1885 1886 1887 1888 1889 1890 1891 1892 1893 1894 1895 1896 1897 1898 
+  16   16   16   16   16   25   17   12   12   12   12   12   12   12 
+1899 1900 1901 1902 1903 1904 1905 1906 1907 1908 1909 1910 1911 1912 
+  12    8   16   16   16   16   16   16   16   16   16   16   16   16 
+1913 1914 1915 1916 1917 1918 1919 1920 1921 1922 1923 1924 1925 1926 
+  16   24   24   16   16   16   16   16   16   16   16   16   16   16 
+1927 1928 1929 1930 1931 1932 1933 1934 1935 1936 1937 1938 1939 1940 
+  16   16   16   16   16   16   16   16   16   16   16   16   16   16 
+1941 1942 1943 1944 1945 1946 1947 1948 1949 1950 1951 1952 1953 1954 
+  16   16   16   16   16   16   16   16   16   16   16   16   16   16 
+1955 1956 1957 1958 1959 1960 1961 1962 1963 1964 1965 1966 1967 1968 
+  16   16   16   16   16   16   18   20   20   20   20   20   20   20 
+[37:44] 63> 
