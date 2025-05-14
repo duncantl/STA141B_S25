@@ -20,6 +20,12 @@ GROUP BY g
 HAVING age = MIN(age);
 
 
+-- Note that we get one row per group
+select * FROM Foo
+GROUP BY g;
+
+
+-- 
 select * FROM Foo
 GROUP BY g
 HAVING (MAX(age) - MIN(age)) > 20;
