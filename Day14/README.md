@@ -8,3 +8,6 @@
     is also a column in `p` so we end up comparing
 	 `p$playerID == p$ID` rather than
 	 `p$playerID = ID` where ID is in the global environment/workspace.
+
++ [explanation of subset() oddity](subset_ID.R)
+
