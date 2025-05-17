@@ -43,11 +43,28 @@ AND  OwnerUserId = '';
 
 - What question has the most comments associated with it?
 
+We want the table
+Posts          Comments
+Question1      ......
+Question1      ......
+
+Question2      ......
+Question2      ......
+Question2      ......
+
+For a given post, we get as many rows as there are comments associated with that post.
+We do want to keep the questions that have no comments so that they will have 0 comments.
+
+We drop the answers/keep only the questions.
+
+When we have this table, we can GROUP BY questionId and COUNT() the number of rows for that question.
+
+
 SELECT p.Id, COUNT(*) as numComments
 FROM Posts AS p
 LEFT JOIN Comments AS c
 ON  c.PostId = p.Id
-WHERE PostTypeId = 1
+WHERE PostTypeId = 1 -- questions only
 GROUP BY p.Id
 ORDER BY numComments DESC
 LIMIT 20;
@@ -71,7 +88,7 @@ Q3   answer87
 
 So we need to LEFT JOIN Posts with  what other table?
 
-The answers are also in Posts.  So we need to LEFT JOIN Posts with Posts.
+The answers tuples are also in Posts.  So we need to LEFT JOIN Posts with Posts.
 
 We connect an answer post with the question post when
     answer.ParentId = question.Id
@@ -131,3 +148,9 @@ LIMIT 10;
 -- Why are there numerous negative values, i.e, answers before the question.
 
 
+
+
+
+-- + What is the date range for the questions and answers in this database?
+SELECT MIN(CreationDate), MAX(CreationDate)
+FROM Posts;
