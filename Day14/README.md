@@ -1,4 +1,4 @@
-## Day 14
+# Day 14
 
 + [questions](Qs.md) about the stats.stackexchange database
 + [answers](ans.sql) for many of these questions
