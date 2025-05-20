@@ -171,9 +171,9 @@ If you must get the data from Web pages intended for humans to read
 + We don't want the HTML, CSS, WOFF2, JavaScript documents
 
 + We want the relevant JSON documents
-   + the one(s) with the data.
-   + How do we know this?
-     + experience, instinct
+   + the one(s) with the data of interest.
+   + How do we know this and which JSON documents?
+     + experience, instinct, exploration
      + The octet-stream are also often of interest.
 
 + Explore in developer tools
@@ -181,16 +181,49 @@ If you must get the data from Web pages intended for humans to read
 + Or export requests as a [HAR file](www.marinetraffic.com_Archive [25-05-19 11-38-06].har) and read into R.
    + See [HAR package](https://github.com/duncantl/HAR)
 
+```{r}
+m = readHAR("www.marinetraffic.com_Archive [25-05-19 11-38-06].har")
+table(m$mimeType)
+```
+
+---
+# Aside - Structure of HAR data.frame
+
++ HAR file is itself a JSON document
+   + Also may include requests that themselves involve JSON documents
+     as responses, or even, the body of a request.
+
+
+```{r}
+names(m)
+```
+
+```
+ [1] "startedDateTime"     "_securityState"      "serverIPAddress"    
+ [4] "connection"          "pageref"             "time"               
+ [7] "blocked"             "dns"                 "connect"            
+[10] "ssl"                 "send"                "wait"               
+[13] "receive"             "bodySize"            "method"             
+[16] "url"                 "httpVersion"         "headersSize"        
+[19] "requestHeaders"      "requestCookies"      "queryString"        
+[22] "postData"            "responseStatus"      "responseStatusText" 
+[25] "responseHttpVersion" "responseRedirectURL" "responseHeadersSize"
+[28] "responseBodySize"    "responseHeaders"     "responseCookies"    
+[31] "content"             "mimeType"            "responseEncoding"   
+```
+
++ See the HAR package for how I transformed this hierarchical structure
+   into a data.frame.
+
 ---
 # Getting the Vessel Information
 
-<!-- 
-m = readHAR("www.marinetraffic.com_Archive [25-05-19 11-38-06].har")
-mj = subset(m, mt2(m$mimeType) == "json")
--->
-
 + Can look at the URLs for the JSON documents
 
+```{r}
+mj = subset(m, mt2(m$mimeType) == "json")
+mj$url
+```
 
 + Find several of the form
 
@@ -207,28 +240,24 @@ mj$url[i]
 
 -->
 
-+ Explore one of these in the developer tools
-
-+ Or by examining the contents in the HAR  file and corresponding 
-   request.
-
 
 ---
 # Explore in R
 
-+ I saved the collection of requests from the Developer Tools as a HAR file.
-   + This is JSON
-   + Then read it into R and organized the requests into a data.frame with a row per request.
-      + See HAR package I created recently.
-
-
-+ To explore the structure of one of the requests that returns a JSON document, we convert one from JSON to R
+```{r}
+i = grep("get_data_json", mj$url)
+i = mj$url[i]
 ```
+
++ To explore the structure of one of the **requests** that returns a JSON document, we convert one from JSON to R
+```{r}
 j = fromJSON(mj$content[ i[1] ])
 ```
 
+
+
 + Explore
-```
+```{r}
 names(j)
 sapply(j, class)
 sapply(j, length)
@@ -236,6 +265,8 @@ sapply(j$data, length)
 names(j$data$rows[[1]])
 ```
 
++ Note - this JSON document was from an HTTP request. Different from the HAR file in which it is contained
+   but also a JSON document.
 
 ---
 # Transforming
@@ -248,18 +279,19 @@ names(j$data$rows[[1]])
    + with the same names?
    + If so, we can use `do.call(rbind, j$data$rows)`
    
-```
+```{r}
 r = j$data$rows
 table(sapply(r, class))
 table(sapply(r, length))
 ```
 
-We'll come back to how we transform the collection of vessel information 
-into a suitable format in R.
++ We'll come back to how we transform the collection of vessel information 
+  into a suitable format in R.
+   + See [marineExplore.R](marineExplore.R)
 
-For now, we have the data, but we read it from a HAR file.
++ For now, we have the data, but we read it from a HAR file.
 
-We need to be able to query it directly from the Web site and not our Web browser.
++ We need to be able to query it directly from the Web site and not indirectly from a HAR file from our Web browser.
 
 
 ---
@@ -282,6 +314,20 @@ ll = readLines(u)
    + URL
    + a header consisting of 
       + `name: value` pairs
+
+```{r}
+names(mj$requestHeaders[[ i[1] ]])
+```
+```
+ [1] "Host"             "User-Agent"       "Accept"          
+ [4] "Accept-Language"  "Accept-Encoding"  "Vessel-Image"    
+ [7] "X-Requested-With" "DNT"              "Sec-GPC"         
+[10] "Connection"       "Referer"          "Cookie"          
+[13] "Sec-Fetch-Dest"   "Sec-Fetch-Mode"   "Sec-Fetch-Site"  
+[16] "Pragma"           "Cache-Control"    "TE"              
+```
+---
+# HTTP Request Headers
    
 + Common header fields are 
    + Accept
@@ -297,6 +343,13 @@ ll = readLines(u)
    + the desired language for the result, e.g., English, Spanish, Chinese, ...
    + the acceptable character encoding(s).
 
+```
+                   Accept           Accept-Language 
+                    "*/*"          "en-US,en;q=0.5" 
+          Accept-Encoding 
+"gzip, deflate, br, zstd" 
+```
+
 ---
 # HTTP Request Header Fields
 
@@ -305,12 +358,18 @@ ll = readLines(u)
 + The Cookie is a collection of name=value pairs associated with the specific Web serve/domain
   + they maintain state across separate HTTP requests
 
-+ These are often very vital to making a request.
++ These are often very **vital** to making a request.
     + There may be other authorization tokens we need to provide.
 	
+
+---
+# Making the HTTP Request
 	
 + Copy the cookie and user-agent from the Developer tools
-```
+   + or extract from a request in the HAR file
+
+
+```{r}
 k = "_cfuvid=we...."
 ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0"
 ```
@@ -318,15 +377,15 @@ ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Fir
 + Using getURLContent() from RCurl, 
     + or functions in curl2 or httr
 
-```
+```{r}
 jj = getURLContent(u, cookie = k, useragent = ua, verbose = TRUE)
 ```
    + Success
       + Unless the cookie has expired.
-	    + If so, reload the page and find the most recent request.
+	    + If so, reload the page in the Web browser and find the most recent request.
 
 ---
-# Function to Retrieve Current Data
+# Function to Retrieve <i><u>Current</u></i> Data
 
 + We can now write a function to retrieve the vessel data.
 
@@ -351,14 +410,12 @@ www.marinetraffic.com/getData/get_data_json_4/z:2/X:1/Y:1/station:0"
    
 ---
 # Recap
-
 + marinetraffic.com was a dynamic Web page
    + not a fixed HTML page
 
 + Data initially retrieved after loading the top-level page
    + update map
-   
-+ Periodically fetch new data.
+   + Periodically fetch new data.
 
 + We had to identify which requests contained the data we wanted
    + looked for JSON mime type
@@ -370,33 +427,44 @@ www.marinetraffic.com/getData/get_data_json_4/z:2/X:1/Y:1/station:0"
     + Determine how to mimic how to perform those in R
 	+ needed cookie and useragent (?)
 
+---
+# Recap - 2
+
 + While not HTTP/parsing, needed to transform R objects from JSON into 
    coherent data.frame.
 
 ---
 # Static Content
 
-+ Consider [https://greenercars.org/greenercars-ratings/](https://greenercars.org/greenercars-ratings/)
-  +  Take a look
++ Consider
+  <a href="https://greenercars.org/greenercars-ratings/" target="_blank">greenercars.org/greenercars-ratings/</a>
+     +  Take a look
   
-![](greenercars.png)  
+<center><img src=greenercars.png width=500 height=450/>  </center>
 
 ---
-# Examples
 # HTML Table
 
-+ [https://greenercars.org/greenercars-ratings](https://greenercars.org/greenercars-ratings/)
++ Get the document via an HTTP request
 
---
 
-```
+```{r}
 u = "https://greenercars.org/greenercars-ratings/"
-d = XML::readHTMLTable(u, which = 1)
+ll = readLines(u)
+```
+   + no need for user-agent or cookie 
+
++ Parse HTML and extract contents of table
+
+```{r}
+d = XML::readHTMLTable(ll, which = 1)
 dim(d)
 head(d)
 ```
 
 + Got the result for all 63 "pages" displayed in the page's interface.
+    + 63 pages with 20 rows per page = 1260
+    + we got 1243 ?
 
 + Now transform into appropriate columns.
    + An R challenge, not a scraping issue.
@@ -409,15 +477,15 @@ head(d)
    -->
 
 ---
-# Examples
+# Static HTML Example
 
-+ Consider [www.city-data.com](https://www.city-data.com)
++ Consider <a href="www.city-data.com" target="_blank">https://www.city-data.com</a>
 
 + California
 + [Davis](https://www.city-data.com/city/Davis-California.html)
 
 
-+ Get the document from the Web site and
++ Get the document from the Web site
 ```
 u = "https://www.city-data.com/city/Davis-California.html"
 txt = readLines(u)
@@ -425,15 +493,25 @@ txt = readLines(u)
 
 + Parse it as an XML/HTML tree of nodes
 ```
-doc = htmlParse()
+doc = htmlParse(txt)
 ```
 
 + Next step is to explore the format and extract the data
 
 ---
-# Exploring the Format
+# Exploring the HTML Format
 
-```
++ In R or via the Developer Tools Inspector panel.
+
+<center><img src="InspectorPanel_Davis.png" width=500 height=400/></center>
+
+---
+# Exploring the HTML Format
+
++ In R,
+
+
+```{r}
 sec = getNodeSet(doc, "//section[@id and .//table]")
 sapply(sec, xmlGetAttr, "id")
 d = lapply(sec, readHTMLTable, which = 1)
@@ -476,9 +554,9 @@ names(d) = sapply(sec, xmlGetAttr, "id")
 
 + Specify a URL, e.g.,
 ```
-read.csv("https://raw.githubusercontent.com/duncantl/ST141B_S23/main/Data/Sample.csv")
-readLines("https://raw.githubusercontent.com/duncantl/ST141B_S23/main/Data/Weblogs/eeyore.log",
-          n= 10)
+read.csv("https://datawrapper.dwcdn.net/zzc7x/3/dataset.csv")
+readLines("https://raw.githubusercontent.com/duncantl/STA141B_S25/refs/heads/main/Data/eeyore.log",
+          n = 10)
 ```
 
 ---
@@ -505,7 +583,6 @@ readLines("https://raw.githubusercontent.com/duncantl/ST141B_S23/main/Data/Weblo
   + CSV - comma separated values
   + XML - eXtensible Markup Language
   + Protobuf - customized binary representation of data.
-     + less frequent.
 
 + Sometimes content is returned compressed, e.g., gzip format
 
@@ -542,7 +619,7 @@ readLines("https://raw.githubusercontent.com/duncantl/ST141B_S23/main/Data/Weblo
 
 
 ---
-# Static HTMLPages
+# Static HTML Pages
 
 + Often scraping many pages from a search query on a particular Web site,
   e.g., cragislist.com, stackoverflow.com, cybercoders.com
@@ -550,6 +627,13 @@ readLines("https://raw.githubusercontent.com/duncantl/ST141B_S23/main/Data/Weblo
 + Results organized for humans 
   + page of results with links to page for each individual result
   + link/button for Next Page 
+
++ Strategy
+   + Perform initial query
+   + Collect information about results
+      + including links to each page of full result
+   + make request for next page
+   + repeat
 
 ---
 # Tools to Explore Specific HTTP Requests
