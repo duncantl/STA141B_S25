@@ -615,7 +615,8 @@ readLines("https://raw.githubusercontent.com/duncantl/STA141B_S25/refs/heads/mai
    + XML content is application/domain specific
    + HTML - layout structure and content page-specific
 
-+ Use XPath or CSS Selectors to select nodes within the tree.
++ Use [XPath](https://www.w3schools.com/xml/xpath_intro.asp) or
+   [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.php) to select nodes within the tree.
 
 
 ---
@@ -629,11 +630,13 @@ readLines("https://raw.githubusercontent.com/duncantl/STA141B_S25/refs/heads/mai
   + link/button for Next Page 
 
 + Strategy
-   + Perform initial query
+   + Perform initial query to get first page of results
    + Collect information about results
+      + summary information for each result
       + including links to each page of full result
    + make request for next page
    + repeat
+   + process full page for each result
 
 ---
 # Tools to Explore Specific HTTP Requests
