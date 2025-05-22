@@ -1,3 +1,12 @@
+# Need to have the selenium server running locally.
+#
+# In the terminal, run 
+# java -jar selenium-server-standalone-3.9.1.jar
+#
+# after downloading from
+# https://selenium-release.storage.googleapis.com/index.html
+# I use 3.9.1, but you can try 4.0.
+
 library(RSelenium)
 
 dr = remoteDriver$new()
