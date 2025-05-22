@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Scraping</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+<textarea id="source">
+
+class: center, middle
+
+# XPath Web Scraping
+### Duncan Temple Lang
+### STA141B
+
+
+<div style="clear: both"/>
+
+---
+
+# XPath
+
++ Language to navigate a tree
++ Series of **steps** to make a **path**
++ Analogous to series of directions
+
++ Each step consist of
+  + direction/axis
+  + node test - node name or type
+  + predicate - optional logical,
+     + within `[ ]` - "where" or "such that"
+
++ steps separated by `/`
+
+```xpath
+/step1/step2/step3
+
+/descendant-or-self::ul[@class = 'repo-list']/
+     descendant-or-self::a[starts-with(@title, 'Topic:')]
+
+//ul[@class = 'repo-list']//a[starts-with(@title, 'Topic:')]
+```
+
++ `//` is special shorthand
+    + `descendant-or-self`
+---
+
+## Axes
+
++ down, up, left, right, attribute
+   + one level
+   + all levels
+
++ [Full set of axes names](https://www.w3schools.com/xml/xpath_axes.asp)
+
++ Shorthand for common axes
+
+   +  `//` - descendant-or-self
+   +  `.` - self, i.e., current node/position.
+   +  `..` - parent node
+   +  `@xyz` - attribute named xyz
+
+
+---
+# Node test
+
+
+```
+//a
+//text()
+//table//td
+```
+
++ The Axes in these examples correspond to `descendant-or-self`
+
++ The node tests are
+   + `a` for `<a>` nodes
+   + `text()` for actual plain text within a parent node
+   + `table` and `td` for nodes name `<table>` and `<td>`
+
++ `//*` for any node
+   + doesn't match `text()` nodes     
+
++ `//@*` for any attribute in any node.
+    
+---
+
+## Predicate
+
++ usual compare operators
+   + `=`, `!=`, `>`, `<`, `<=`, ...
+
++ logical combinations - the literal words `and`, `or`
+```
+contains(., 'foo') and starts-with(., 'bar')
+```
+
+---
+## XPath Functions
+
+[Functions](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions)
+
++ Can use in predicate part.
+
++ `starts-with(node, 'text to find')`
++ `contains(node, 'text to find')`
++ `normalize-space()`
++ `substring()`
++ `string-length()`
++ `position()`
+
+---
+
+# XML Package Functions
+
++ htmlParse()
+
++ getNodeSet()
+
++ xpathApply(), xpathSApply()
+
++ xmlName()
++ xmlGetAttr()
++ xmlAttrs()
+
++ xmlChildren(), `x[]`
++ xmlSize()
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script src="remark-toc/index.js">     </script>   
+    <script>
+     var slideshow = remark.create();
+//     var toc = require('remark-toc');
+//     slideshow.use(toc);
+    </script>
+  </body>
+</html>

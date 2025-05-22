@@ -1,0 +1,999 @@
+]0;Day16~/sta141b/Public/Day16> R
+
+R Under development (unstable) (2025-03-26 r88055) -- "Unsuffered Consequences"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin23.6.0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+PID = 14577 
+Time = 2025-05-22 10:30:21 
+Dir = /Users/duncan/Classes/Davis/STA141B_24_25/Public/Day16 
+1> library(HAR)
+[30:24] 2> f = "../../Scrape/www.monster.com_Archive [25-05-21 10-17-41].har"
+[30:47] 3> file.exists(f)
+[1] FALSE
+[30:49] 4> f = "../../Scrape/monster.com/www.monster.com_Archive [25-05-21 10-17-41].har"
+[30:58] 5> file.exists(f)
+[1] TRUE
+[30:59] 6> h = readHAR(f)
+[31:07] 7> dim(h)
+[1] 330  33
+[49:36] 8> table(h$mimeType)
+
+               application/javascript application/javascript; charset=utf-8 application/javascript; charset=UTF-8 
+                                   10                                     1                                    33 
+                     application/json       application/json; charset=utf-8                   binary/octet-stream 
+                                   22                                     8                                     2 
+                           font/woff2                             image/gif                            image/jpeg 
+                                   10                                    20                                     2 
+                            image/png                         image/svg+xml                          image/x-icon 
+                                   41                                    11                                     2 
+                             text/css               text/css; charset=utf-8                             text/html 
+                                    6                                     1                                    10 
+             text/html; charset=utf-8                       text/javascript                            text/plain 
+                                    6                                     2                                     7 
+            text/plain; charset=UTF-8 
+                                    2 
+[49:56] 9> table(grepl("json", h$mimeType))
+
+FALSE  TRUE 
+  300    30 
+[50:11] 10> names(h)
+ [1] "startedDateTime"     "_securityState"      "serverIPAddress"     "connection"          "pageref"            
+ [6] "time"                "blocked"             "dns"                 "connect"             "ssl"                
+[11] "send"                "wait"                "receive"             "bodySize"            "method"             
+[16] "url"                 "httpVersion"         "headersSize"         "requestHeaders"      "requestCookies"     
+[21] "queryString"         "postData"            "responseStatus"      "responseStatusText"  "responseHttpVersion"
+[26] "responseRedirectURL" "responseHeadersSize" "responseBodySize"    "responseHeaders"     "responseCookies"    
+[31] "content"             "mimeType"            "responseEncoding"   
+[50:21] 11> hj = h[grepl("json", h$mimeType), ]
+[50:50] 12> dim(hj)
+[1] 30 33
+[50:53] 13> table(hj$method)
+
+ GET POST 
+  19   11 
+[51:10] 14> split(hj$url, hj$method)
+$GET
+ [1] "https://appsapi.monster.io/jobs-typeahead-service/v1/geo?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=Hayward%2C%20CA"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ [2] "https://appsapi.monster.io/jobs-typeahead-service/v1/geo?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=%2C%20CA"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ [3] "https://appsapi.monster.io/jobs-typeahead-service/v1/geo?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=%20CA"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+ [4] "https://appsapi.monster.io/jobs-typeahead-service/v1/geo?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=CA"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ [5] "https://appsapi.monster.io/jobs-typeahead-service/v1/title?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=data%20scien"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ [6] "https://appsapi.monster.io/jobs-typeahead-service/v1/title?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=data%20scientist"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ [7] "https://appsapi.monster.io/jobs-typeahead-service/v1/title?apikey=nQkzvboJoLLuD9x86DzDlVTsj5YvdWaK&locale=en-us&query=Data%20Scientist"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ [8] "https://cdn.cookielaw.org/consent/019387a9-5a34-7750-86a1-c839dd211386/019387a9-5a34-7750-86a1-c839dd211386.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ [9] "https://cdn.cookielaw.org/consent/019387a9-5a34-7750-86a1-c839dd211386/0193b241-4440-7578-ac26-e514648e966a/en.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+[10] "https://cdn.cookielaw.org/scripttemplates/202502.1.0/assets/otFlat.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[11] "https://cdn.cookielaw.org/scripttemplates/202502.1.0/assets/v2/otPcCenter.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[12] "https://s.yimg.com/wi/config/10200715.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[13] "https://geo.captcha-delivery.com/captcha/check?cid=llKbqJ6UT4E3WBEQaLnQZ6camgZjOxthjKiiAyh6DXZrFaFBfinCBNA6dw8Lf3JdAyzBI6fME0KLaMk52NFslchZGCFCE2qpKVm809j53KFaXdl6AO0MnaEXHIiiDhCO&icid=AHrlqAAAAAMAX8y8EW3ObOgAGAdYPg%3D%3D&ccid=&userEnv=3dd84eee285ab54aaf588d45c1a1edd914d2627c33aaeab73e827de176974526&dm=dc_ir&ddCaptchaChallenge=a2d383751793e566177c4ec75d4ebf73&ddCaptchaEncodedPayload=oPCi4mN8qNps8l2vJo32jZl9bONhQxmmtI1yKqfBgjGR3v-5UGw1Z_ZA2ATta2Pmoye3B98rc8W6Si-8pknO7iZZ1PAzMgx9Rsm1qqq48uFhRORowdSp2jj41LEKo77UIF9VbCbHkOMtkc-L87S3PFY0C9e2eSW6XSNe8Uh16pe3mnD8q8NJ8W1pd3-o9puOqkq4L9XcldDgl_1Ti1uZHqtxlZ5QywfAHtMJnl3sPiIjgVtsGZuvJs6_KjcqG2JROkvzPKpDAfVEFs-UfV2Zyi5tKaXeesvolKQ1ylMjEyfAD57hTUfOGkd1c-sdwv5-bjE9chnW_YZt9Doe4-viv4oGUoaPnmDCuknTdepwIUIYE8_EBklky88FZV1AeipH9kVGrqFMBa6HcPReI2k1pRWIefNimAkL5ByeBV2qir1ph9zQ_FU9M40DzRUABHTUXL8YsvUAMGrJtT5XKdv9UFTOrtFbryvfUwpZ0T8qSH7M2RTd2_iRPbfch2ur3_4Zq5pAGDnHKGlD5EzCbKF3kLhqqVDvm8115CfHb7IN1X-g3GuNqoM1bRhnq4oWA8EDKwHr7iFkaPj7eu3v6AJmjeyWKAfyslB7CGycen8RukxA1atyqkNBG1zb9ezvVn_fls0PIekO6zdM7syZr1tM0J7b3NQZUUAAds6mjL8O_g60XjFFA9yXhmi_xtHeyOaUqAoKZ7IFZXsj0tcGaiVM-8s-CA1wltFcncNrkKgmv3BcCKUykfMXuXJUCLxp0rkQ5SfxKJ8RA2fXC6pDACwuqESOL6oy8X3pgCl_dj_k2DWqrunOG5lEwZeCDr5rltQWfNLZ60nbYIdoxcb_fBXpQuLLhp4TYs9ilNrq_dp40nzH6x28SdA7RLV3T4xzMZQE9u9KBMHOnxne9SGVOburV1d_DjfiP2M2_bw9uZwlaz2JVQn3R7SdQIUMvIJarpW-pEL3RO_Uif2zE5yTWvS3FwrJbaPwXQuSBwtiJpkDBrLQW_WkxQ3Y4ANv3oqygVaq8OwJKerCa81B6UYOAPSvyCMxALD6htBsWRYopAddpuKFEIhu_tzb_J79GvuaLWwGEuiiAjDrARLcZXvsY34ByHs__DyR2NGoNHpPNwtWVFhR9wR1O6uDtix3WOTFCVthY-YnekJ4ZjdkNym205VKybEGmWdtvKZqBnyAsYnKOFynHsl2_w8DFgdp8wlq00_p93BRKaEhREUZvoM6iKbYDfoSNhoEbvqaV7wdjCuyT2ySdqSJiNTZiv7OQUtsdHaS9YB7wATFQR0TpRKsoFw6qSKRoQN-NrmYm_Isq49auzcjfIUoiXQ_kIGjJ2N5owMHRRKbWOiJjeXyUJxyQ_IhXQwJJy1rp0DzXIAy_1un-kcoFvYyVrOJhflJR-its4lIhkJybZdPktb4B-kfg3c6Rixp2my21M_KGXEsyW4a7JfDg9hsO1f9roWGbDUxS4m88dwVXcaJi3E3__dgqrIGEBseevj8yMHeeWt-woWrHYxuWXmhVlC9iAaMEMzF06kW58ca_7MfHtjGXYZXF5Fk1v_mJ1IDJwHvpQt-GVf3cXJpEP9wmxVNVxaTma84jujkYo6rGzbA4R1Tjy0770RSxoEBOcCAZ00avDPHCdAYmuvFTD02SxTct4vb2q7HAQdYYIi-K8CwZuEcIAxyav2sYnbDAreCUtbB0LRfs7LWXGY_iF_Yg-g3NDja1AgHJp2OERU9quROWLbAuTbEa6crDwhof1gd5MsmZ-QwbnfNSdWHGejaNuadDh03qZufaN7-JVtFn86IQjjrFD1VL0PWFGwTO1XR2PKMsyVours9C6bVdCUSgpk2FH0XD-1gKaH57z1TgwSYXVNrDdKpmE0IUaQ5xkQaAIlPKU8De-sxSC2NEZLSr0dTYdzROrBoM5Xhde8_lfAAb8dJ0nRa9LRKrC0PwiHWel4gAeDPgbhkWVZOLHYYXN_N9i1WR4uPCfBF9m01oi8E5sesM5PxXzPoxhBYMt7GnFB4nDfASni1Hj-t_ugwaga_OKcIPdcWq1Be6mc82f6S5AMlJj5ScEvCuqpoM7J__gCVwOR4qy8tx3NMg1-MjjZsSRAU9doaYAawS9hzwP0B_a7v6346q4no2FtTY9MA96B6m6sp-QaaorntvGEcMwr0kUIxNkEeZpmsd1Q3mnhj8kgC0o_CUZchJ4Ycpfn8cHBSwA8MJjruqcVlSAObeYIW5nU5WswiA3ncUMLdkwJ5m8PuVVyfA7U5I3KTSpUVA0UH9qTprDkfg1DaAy1R1rhwa0GsNjCr-bi7cVCDKX_V9nhaDbFhEvN5TDorHXWI0n4mzpfKDl1Hkmt2yqIxyT5bBacOtFlHodir3ozaxth2brQTNA7d-CetFJgu2JQ25NKZW9CP1P5VXAqJAf5OszyQQngmHYNU1Po0MIhyIPkyAjJ8b8_eyFszf1e93U1FNS4oWCaubFpS-nEV77PbqqklpUT8SxKqYZYRmX2U_FhxvyaEMMwWR-Za-drDyiADth1p_qxIMEBMHkor9T1_0jJHx9rxyZHO8wOA3--I3iFiV3yav1CtpeNHU7hIDFuvttAotBdk5FojbQFRcY6B6SKEv0KnbDE4b_JgnigOmKJC5foMgoxbHQ136l7GYusYrdz7OX5YxZkqpLMhV4jWpVNm72BUdjrwFSjKWarK3mqZx0ZGFpwMBryP-MPRQ4gUMpmrL1669lCi_G2dbm3PJlq7EOWGcSJ6BBWZU64J9cMrBLcVBZWT9-r4l5JMKri4VkQhqiuj0z3jUzDtrnRz7HHmRUGIBwoW0OMXCSdP2YpXUjrDaTULoueHq5xyZpIXrI6qrv6CrWy4rtCpDwZ7gezKTRRUAKrg7NCG_WZn8R4CGxxx5KjOPDDv9NC2f6KRNg42hJjBjaImNRZQpfaYY3_KnfZJSHLnzj3s1F_Yip2ApMMq00kbKFQ_DcsAK-vKxnq1wgCGDRPLev9yjNg_FAA4k61NUinQJNKD3VbR3ZDAjuWVm4TZnsdlDZk4UbTCW1ZIzMD2JAYv_Yh9d7tGJUtDe-mOaHyVTwn9mJJP6tPdrHzqTYriPoP0MMtZ-i9c8Y-Iq6DXw7Owyfq73GfmBX_ce2zbCoqA5kOBLG383BRVWaxxv-Q28NLAnBn7p2vgyoCLAf0UzNDvFu4oEdopfqzHxgpgv0WPBM3UkRTkURCYEEQUBYawBWQ6A-GYD2YAPtv0u-wsI_hQMSqYZF1eH3S6AQkrlrGF9KJIsGOFBTC_u_xCxGADZbp3J3a5V7fvHB32qtEcxYpsGTQAv0mMEe9kTtyBUKwFisnU3i_Ixexm_7_kB6FVilQgpY0Nj9cNMLU-na_hechjQMY-vBdD8HSUiFo2bR_jZuXQLCJZmdoASYYdAjnaUwwzs63TME633gD5Vazs_FdvACY9t36VGyl3T9VEx3corKb1tLSt9U_0tPmZfxMMWwpBnaaBMoEyubFcZkxTQKkUv2rs03jXD6mmxEhw9OUOOjZ0XCTD2GiJJFRVgw1BY8t8me_A64twJE2iEdN-qmnZnhge6S-mNdam0F1Quk0gFcnMi1I3vWRmnA5c1SRf7OqGL2B9NEXhruhU1SnCdXwXQdotJsetJgqJYnMD775FXadPHno7QLA_3C-AgILVtmN0uTUUwD4my3heb4VJ0wkPg79RCsmE3E-Y9VA9sDxdbb3wXF7YH-FY2CP2VtrZQsyGR7VMAMZEkRFt7zQEJC2LL6xLaNlAIpi_NpZ01cqxoMTj4gAYxvcyZx1l-rhPylA0oMMQ3sPkpTVu3lHB6-M7C8G3veUokwKeUGIkcwQwpXvkHq8l4sJXzPD3iML1IFUptG0P2s4lRVQbQMFeat5t7LqA3794tDXr7EYM7TxA6xC0sBEJ_MdT1AnDL2YqGTFLY2NO_RfhrkXt0CFX1TuymbsdRAYUXlki_FHfvfnkB4jNTTehE1op2pGvNpBy3o_mDO9sUM-wcDBOCEHY3w3brqcqZUZtA4Xbs0BJrwq4XZneZg2Zs9i26zz5Af3oAbKADQIIqcYkgq44aSObk206yIJtzS9z1A95YorsjgCvZyspc_eBufDsA_fho90m383uxIJnaitT5iax-6wlegW9zyO4ltXx9-wRJdyruV8l8m9lI6P9mEvOhy-BGu8_tkZ-9LmGgoqbQgBkvzCJfyblTGsbd0WKO04LKai2mrXlrvMq1fjWnPTLZ3X5_bs6fc7M9J13jqsaMu1nlGx7Jf9EJaS8rUssDJV58Kkz975wPyq_gDhDm5lYM7k_dEhdgZtXCzvhhasSgoyW5jWa5WlvlriRf-eOv9XhS7gv0kEr3ex9k6fsXsEJ6K3B7KdbhZCZ_hprNdvY6LMQvI7bEI_gPAN4h85MTL4BtFRWh7hHd6ownWtLaJXIy8hu5uQWofu-NhhHriJIX-C0dYpIr030pgkSx__dsnYPmV9F1dsTop1G7dAid2A6FswARrUl9y8hb596C2pJzMwHG5Q1dQwq1CZgKL11JWkLqJIawWtiJpGIi07SWQs11OetbWAJj6iTLMNgcbCHyP3Nsj2Yymz1_cQclNH4krL01uP_wx36-HlNa0AXEvpvoWfAgKswp47-EBJl-6FeB2QDyxw6X2uRc96aepWrHrxxa-XWFPeIZyqT5_Eb5xLlLBjWmWzKwsg_G7obA1GqvJLJRPHYHf9fv4cAqJtGZX682y-H4Rra-cmZa9laOLZA9tz98RBULQdNXTzAgfl4_ayuttEtI_-bUlZ90GXuxCUq3Odjku-nrjVrtglR0I8T3EAgpzNG8Gm6lt5seaCe3lEU8loeX2NSuD8rdr1b7-BU-bmiOBr5Nm5dh2JbkE6zIwSArWr43Pu9bHQTNpATTkxcRk4FcvqBEWoHjcewy7punJv0zntU6BZvOfS-TXRIPpgiqs02pXoiTh8iJlooOgShsPw9OFZHiDFuu4-Hih2xFJL18cU5HEJx-M8kW9wDal5NJnQqzLjroxTrpn5QID5BJ1PCeSY71XkKMQKvk0q2k06ovLeUTy2AZPbMwiPQZfGlNQ4gIGc56nR5BQFMpkCllt73UM_jWkpt23bQWot0BGgMZogmDf1zrWp-2uURZRKU7P5M7XYO9vGU7Mf6-ktQV5HFU0WhpjI77rUuy_XZOM4xaXdQA7VLFWCmegJbd_zvkq3j0laFFuzpU-Ff6pXdVYiGqYjCKd3ZlszuZ_fdn1gqb4zQOvRSG_miyJLgKWruaTwvzyfvwOjdk0w0AtYxhwPmDNLMm8P_HreOnAVlXvl2QsZhON9yQiDcuhpUQoV_-6JRwjMCY758bFnhE7J3RZ-ee6pwfPr3TT6Y-d9Eu5yt9R45YMz6rutc6Rd1Su2PhNQ8J5p0PIInAVpWizrEKleocIweLWAkWxlDta1RjBFhbeRHZWKv86Lk7rjAjS3sYIQcf1TyFAMOaQQKpz9NbsVvqloUghin7FBdwUdHZnfhMHMDPVtnIY2gnIWGm1Xw_87sXV2cPu8iz-wAj2OaT5x4q_a8j55wh_He0hwWfvLUP-knnpBizfKa4K2W7tSmoN-H-Egh5mUOde-n4jBClHgu3fI_lO3hRvI8aOHMjNNXL4Ljd4Xq5btaTL3Lru2eBEAwM3VHtgKlKIwjzEgNe9KjCt16R0zt_Ll0sFcyLCs7-bqXEs-0vwzNmy8ichsIYvAVlr7oe99jWjEV5a1R07dNO4pmSWZul1eCHHbqfufjCMe3REK69cq2WavaYiakyjBkIwz_jhAtquZwvdUsVqIhpIPvbbrhVSbuOFzUGURuaW8qiU3UFo3fQf-8k7Tm_zOqAr3rpyaL5AHtYpmWDQv-DoF9j4vgMzsMQUmn-Jg6W3IMNZopXMx8nQzAnnSZZy9532hmzGWn6sPX6sPN1QrlVTcFyRzWwXOZrf6syLXsRoTDRqS5j3GfcK_Y_LTrl03qgSCQNNzZ7kXQxuOqARl0b8X7MfTIfUcwx_c_RIco3Thob3uCrREY7lWqKzr1O3wJgt1lYYyUV4XUISViriqhjAp9xZXSODQWhJjfKg8lnxVpj4i8LNt499PTGPhe70Jd--dZSACP2cmT9Vk00zEOMWrcCP-KSdVhLvBVgyu&ddCaptchaEnv=c06668a5c8d37aaf34b556e01e1297eb4e010dc05bc895324193b610a7249a069ec767bd3d30cf6002bec9d8dc72d6751e358df0743c05bf6a843adaaaf37130&ddCaptchaAudioChallenge=f0102405c44788e5e9d1c6b2f87813da&hash=A7B2DA82190597376E01B53F7A9246&ua=Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010.15%3B%20rv%3A138.0)%20Gecko%2F20100101%20Firefox%2F138.0&referer=http%3A%2F%2Fappsapi.monster.io%2Fjobs-svx-service%2Fv2%2Fmonster%2Fsearch-jobs%2Fsamsearch%2Fen-US%3Fapikey%3Dhkp1igv13sjt7ltv5kfdhjpj&parent_url=https%3A%2F%2Fgeo.captcha-delivery.com%2Finterstitial%2F%3FinitialCid%3DAHrlqAAAAAMAX8y8EW3ObOgAGAdYPg%3D%3D%26cid%3DllKbqJ6UT4E3WBEQaLnQZ5N4C5dTvNA5M7cCWrvF2xIBEa6UrYOrvHELR2wo6JAvMy1xF8h8r2Pp1KTG8V0be9o3WNVkuUVJ2G3t209dNjjvJttW_kInn4rUjLpLshhW%26referer%3Dhttp%253A%252F%252Fappsapi.monster.io%252Fjobs-svx-service%252Fv2%252Fmonster%252Fsearch-jobs%252Fsamsearch%252Fen-US%253Fapikey%253Dhkp1igv13sjt7ltv5kfdhjpj%26hash%3DA7B2DA82190597376E01B53F7A9246%26t%3Dit%26s%3D45798%26e%3Dace0993eeff5767bba44763bc987861f39257fe86c22a09ecf08231daa7dc405%26dm%3Djd&x-forwarded-for=&s=45798&ir=36"
+[14] "https://cdn.cookielaw.org/consent/019387a9-5a34-7750-86a1-c839dd211386/019387a9-5a34-7750-86a1-c839dd211386.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+[15] "https://cdn.cookielaw.org/consent/019387a9-5a34-7750-86a1-c839dd211386/0193b241-4440-7578-ac26-e514648e966a/en.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+[16] "https://cdn.cookielaw.org/scripttemplates/202502.1.0/assets/otFlat.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+[17] "https://cdn.cookielaw.org/scripttemplates/202502.1.0/assets/v2/otPcCenter.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[18] "https://s.yimg.com/wi/config/10200715.json"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[19] "https://accounts.google.com/gsi/status?client_id=77555886071-5a3pt2n59c49qv5q83ll0i65lnjgqhv0.apps.googleusercontent.com&cas=dMfHyr19N%2BAeVyXVXOLEhzld3bSi%2BjxSDe%2F74JxK9%2BA&has_opted_out_fedcm=false"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+$POST
+ [1] "https://datadome.monster.com/js/"                                                                                  
+ [2] "https://datadome.monster.com/js/"                                                                                  
+ [3] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+ [4] "https://geo.captcha-delivery.com/interstitial/"                                                                    
+ [5] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+ [6] "https://datadome.monster.com/js/"                                                                                  
+ [7] "https://datadome.monster.com/js/"                                                                                  
+ [8] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+ [9] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[10] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[11] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+
+[51:35] 15> names(h)
+ [1] "startedDateTime"     "_securityState"      "serverIPAddress"     "connection"          "pageref"            
+ [6] "time"                "blocked"             "dns"                 "connect"             "ssl"                
+[11] "send"                "wait"                "receive"             "bodySize"            "method"             
+[16] "url"                 "httpVersion"         "headersSize"         "requestHeaders"      "requestCookies"     
+[21] "queryString"         "postData"            "responseStatus"      "responseStatusText"  "responseHttpVersion"
+[26] "responseRedirectURL" "responseHeadersSize" "responseBodySize"    "responseHeaders"     "responseCookies"    
+[31] "content"             "mimeType"            "responseEncoding"   
+[51:56] 16> hjp = hj[hj$method == "POST", ]
+[52:22] 17> hjp$content[[1]]
+[1] "{\"status\":200,\"cookie\":\"datadome=5CkUppIid6UMsz4YO8SUItqTpBFJvPGenlbvksye5Y9wET0L4ziYrhttiuwGtJuQBcWNGN9lppWk~5ReBqi68RvsOZA0TygCdtKVsGThGPRFeK_fcUM45vYmwZEzecgQ; Max-Age=31536000; Domain=.monster.com; Path=/; Secure; SameSite=Lax\"}"
+[52:38] 18> nchar(hjp$content)
+ [1]    232    232    493    749 465123    232    232 462903 365100 322011 312430
+[52:50] 19> substring(hjp$content[5], 1, 1000)
+[1] "{\"totalSize\":18,\"estimatedTotalSize\":1876,\"jobResults\":[{\"schemaVersion\":\"2.20.0\",\"jobId\":\"ac1fb582-3958-44be-84c1-8d04d573aed1\",\"externalIdentifiers\":[{\n  \"identifierName\" : \"NOW_POSTING_ID\",\n  \"identifierValue\" : \"475c4b08-5208-4db3-a5a5-05d85ed6fbe2\"\n},{\n  \"identifierName\" : \"POSITION_AD_ID\",\n  \"identifierValue\" : \"289204530\"\n}],\"provider\":{\n  \"code\" : \"monster\",\n  \"name\" : \"monster\"\n},\"status\":\"ACTIVE\",\"jobStatus\":{\n  \"status\" : \"ACTIVE\"\n},\"ingestionMethod\":\"ADAPTED_NOW\",\"createdDate\":\"2025-05-18T07:44:16.167Z\",\"modifiedDate\":\"2025-05-18T07:44:16.167Z\",\"apply\":{\n  \"applyType\" : \"NONE\"\n},\"jobPosting\":{\n  \"@context\" : \"https://schema.org\",\n  \"@type\" : \"JobPosting\",\n  \"description\" : \"Senior Data ScientistDevelopment of bio platform pipeline, from data collection, QA/QC, statistical analysis, predictive modeling & delivering timely visualizations. Adv deg. & ex req. $103,958/yr. Mail resume to HR, Light Horse Therapeutics, Inc., 6175 Nancy Ridge Dr, San Diego, CA 92121\",\n  \"url\" : \"ht"
+[53:11] 20> hjp$url[5]
+[1] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[54:00] 21> hjp$queryString[5]
+[[1]]
+                    apikey 
+"hkp1igv13sjt7ltv5kfdhjpj" 
+
+[58:13] 22> hjp$send[5]
+[1] 0
+[59:00] 23> hjp$postData[5]
+[[1]]
+[[1]]$mimeType
+[1] "application/json; charset=utf-8"
+
+[[1]]$params
+list()
+
+[[1]]$text
+[1] "{\"jobQuery\":{\"query\":\"Data Scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":0,\"pageSize\":18,\"includeJobs\":[]}"
+
+
+[02:10] 24> hjp$requestHeaders[[5]]
+*** output flushed ***
+[04:26] 25> options(width = 90)
+[04:32] 26> hjp$requestHeaders[[5]]
+*** output flushed ***
+[04:33] 27> names(hjp$requestHeaders[[5]])
+ [1] "Host"                "User-Agent"          "Accept"             
+ [4] "Accept-Language"     "Accept-Encoding"     "x-datadome-clientid"
+ [7] "Content-Type"        "request-starttime"   "Content-Length"     
+[10] "Origin"              "DNT"                 "Sec-GPC"            
+[13] "Connection"          "Referer"             "Sec-Fetch-Dest"     
+[16] "Sec-Fetch-Mode"      "Sec-Fetch-Site"      "Pragma"             
+[19] "Cache-Control"       "TE"                 
+[04:43] 28> hjp$requestHeaders[[5]][[7]]
+[1] "application/json; charset=utf-8"
+[04:56] 29> b = hjp$postData[5]$text
+[06:26] 30> b
+NULL
+[06:27] 31> b = hjp$postData[[5]]$text
+[06:32] 32> b
+[1] "{\"jobQuery\":{\"query\":\"Data Scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":0,\"pageSize\":18,\"includeJobs\":[]}"
+[06:33] 33> b2 = fromJSON(b)
+Error in fromJSON(b) : could not find function "fromJSON"
+No suitable frames for recover()
+[06:33] 33> library(RJSONION)
+Error in library(RJSONION) : there is no package called ‘RJSONION’
+
+Enter a frame number, or 0 to exit   
+
+1: library(RJSONION)
+
+Selection: 0
+[06:33] 33> library(RJSONIO)
+[06:56] 34> b2 = fromJSON(b)
+[06:58] 35> b2
+$jobQuery
+$jobQuery$query
+[1] "Data Scientist"
+
+$jobQuery$locations
+$jobQuery$locations[[1]]
+$jobQuery$locations[[1]]$country
+[1] "us"
+
+$jobQuery$locations[[1]]$address
+[1] "CA"
+
+$jobQuery$locations[[1]]$radius
+$jobQuery$locations[[1]]$radius$unit
+[1] "mi"
+
+$jobQuery$locations[[1]]$radius$value
+[1] 20
+
+
+
+
+
+$jobAdsRequest
+$jobAdsRequest$position
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+
+$jobAdsRequest$placement
+        channel        location        property            type            view 
+          "WEB" "JobSearchPage"   "monster.com"    "JOB_SEARCH"         "SPLIT" 
+
+
+$fingerprintId
+[1] "z3a27c81abee3bbf53773af8339d47aa6"
+
+$offset
+[1] 0
+
+$pageSize
+[1] 18
+
+$includeJobs
+list()
+
+[06:59] 36> nchar(hjp$content)
+ [1]    232    232    493    749 465123    232    232 462903 365100 322011 312430
+[10:56] 37> dim(hjp)
+[1] 11 33
+[11:06] 38> hjp$postData[[11]]
+$mimeType
+[1] "application/json; charset=utf-8"
+
+$params
+list()
+
+$text
+[1] "{\"jobQuery\":{\"query\":\"Data Scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":72,\"pageSize\":18,\"searchId\":\"6d5acd50-d7ce-4c9e-a391-d979eccd96fa\"}"
+
+[11:16] 39> hjp$postData[[5]]$text
+[1] "{\"jobQuery\":{\"query\":\"Data Scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":0,\"pageSize\":18,\"includeJobs\":[]}"
+[12:17] 40> names(hjp$requestHeaders[[5]])
+ [1] "Host"                "User-Agent"          "Accept"             
+ [4] "Accept-Language"     "Accept-Encoding"     "x-datadome-clientid"
+ [7] "Content-Type"        "request-starttime"   "Content-Length"     
+[10] "Origin"              "DNT"                 "Sec-GPC"            
+[13] "Connection"          "Referer"             "Sec-Fetch-Dest"     
+[16] "Sec-Fetch-Mode"      "Sec-Fetch-Site"      "Pragma"             
+[19] "Cache-Control"       "TE"                 
+[15:18] 41> hjp$requestHeaders[[5]][9]
+Content-Length 
+         "406" 
+[15:28] 42> library(Rselenium)
+Error in library(Rselenium) : there is no package called ‘Rselenium’
+
+Enter a frame number, or 0 to exit   
+
+1: library(Rselenium)
+
+Selection: 0
+[15:28] 42> library(RSelenium)
+[39:23] 43> ls(2)
+[1] "errorHandler"       "getChromeProfile"   "getFirefoxProfile"  "makeFirefoxProfile"
+[5] "remoteDriver"       "rsDriver"           "selKeys"            "webElement"        
+[39:26] 44> dr = remoteDriver$new()
+[39:35] 45> u = "https://fa-euyk-dev2-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/PenskeCareers/job/2502487"
+[39:51] 46> dr$navigate(u)
+Error in checkError(res) : 
+  Undefined error in httr call. httr output: length(url) == 1 is not TRUE
+
+Enter a frame number, or 0 to exit   
+
+1: dr$navigate(u)
+2: queryRD(qpath, "POST", qdata = list(url = url))
+3: checkError(res)
+
+Selection: 0
+[39:51] 46> dr$navigate("http://google.com")
+Error in checkError(res) : 
+  Undefined error in httr call. httr output: length(url) == 1 is not TRUE
+
+Enter a frame number, or 0 to exit   
+
+1: dr$navigate("http://google.com")
+2: queryRD(qpath, "POST", qdata = list(url = url))
+3: checkError(res)
+
+Selection: 0
+[39:51] 46> dr$open()
+[1] "Connecting to remote server"
+$`moz:profile`
+[1] "/var/folders/c6/4s51_pv103g5n1yd6cdzr08w0000gn/T/rust_mozprofileMW5V5E"
+
+$`moz:geckodriverVersion`
+[1] "0.34.0"
+
+$timeouts
+$timeouts$implicit
+[1] 0
+
+$timeouts$pageLoad
+[1] 300000
+
+$timeouts$script
+[1] 30000
+
+
+$pageLoadStrategy
+[1] "normal"
+
+$unhandledPromptBehavior
+[1] "dismiss and notify"
+
+$strictFileInteractability
+[1] FALSE
+
+$`moz:headless`
+[1] FALSE
+
+$`moz:windowless`
+[1] FALSE
+
+$proxy
+named list()
+
+$`moz:accessibilityChecks`
+[1] FALSE
+
+$`moz:useNonSpecCompliantPointerOrigin`
+[1] FALSE
+
+$acceptInsecureCerts
+[1] FALSE
+
+$browserVersion
+[1] "109.0.1"
+
+$`moz:shutdownTimeout`
+[1] 60000
+
+$`moz:processID`
+[1] 16200
+
+$browserName
+[1] "firefox"
+
+$`moz:buildID`
+[1] "20230127170202"
+
+$`moz:platformVersion`
+[1] "23.6.0"
+
+$platformName
+[1] "mac"
+
+$setWindowRect
+[1] TRUE
+
+$`moz:webdriverClick`
+[1] TRUE
+
+$webdriver.remote.sessionid
+[1] "305a2ed4-1f70-4e08-9047-aed8f89d1bf3"
+
+$id
+[1] "305a2ed4-1f70-4e08-9047-aed8f89d1bf3"
+
+[41:07] 47> u
+[1] "https://fa-euyk-dev2-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/PenskeCareers/job/2502487"
+[41:49] 48> dr$navigate(u)
+[41:53] 49> p = dr$getPageSource()
+[42:17] 50> class(p)
+[1] "list"
+[42:21] 51> length(p)
+[1] 1
+[42:26] 52> names(p)
+NULL
+[42:30] 53> class(p[[1]])
+[1] "character"
+[42:38] 54> length(p[[1]])
+[1] 1
+[42:43] 55> nchar(p[[1]])
+[1] 79798
+[42:46] 56> substring(p[[1]], 1, 1000)
+[1] "<html dir=\"ltr\" class=\"oj-agent-os-mac oj-agent-browser-firefox\" lang=\"en\"><head><style></style>\n        <meta charset=\"utf-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1\">\n        \n                    <meta name=\"robots\" content=\"noindex, nofollow\">\n                \n                        \n                   \n            <meta property=\"og:title\" content=\"Graduate Intern - CX Data Science\">\n            <meta property=\"og:description\" content=\"Company Overview: Founding in 1969, Penske is an $8.4 billion leader in transportation and logistics. Penske operates more than 300,000 vehicles and serves its customers from more than 1,000 locations in North America, South America, Europe, Asia and Australia. Our product lines include full-service truck leasing, contract maintenance, truck rentals, used truck sales, and global logistics and supply chain solutions. The company employs more than 36,000 people worldwide. Penske is "
+[42:55] 57> grep("<strong>Responsibilities", p[[1]])
+[1] 1
+[43:16] 58> library(XML)
+[45:34] 59> doc = htmlParse(p[[1]])
+[46:06] 60> lists  = getNodeSet(doc, "//ul")
+[46:44] 61> length(lists)
+[1] 7
+[46:47] 62> lists
+[[1]]
+<ul><li class="user-menu__action-item">
+                <button data-bind="click: goToCss,&#10;                    i18n: 'candidate-self-service.user-menu.my-profile'">Profile</button>
+            </li>
+            <li class="user-menu__action-item">
+                <button data-bind="i18n: 'candidate-self-service.sign-out',&#10;                    click: signOut">Sign Out</button>
+            </li>
+        </ul> 
+
+[[2]]
+<ul><li>Utilize SAS and Python to analyze data for a variety of business problems. </li>
+ <li>Generate meaningful insights from data gathered from multiple sources.</li>
+ <li>Support Senior Data Scientist on Model Development and Testing.</li>
+ <li>Create engaging story to communicate findings/results effectively. </li>
+</ul> 
+
+[[3]]
+<ul>
+  <li>Currently enrolled in STEM MS/MA degree program (1st year students only)</li>
+  <li>Course work in Statistical Theory, Statistical Methods, Multi-variate Analysis, Linear Model, Data Science, Gradient Boosting/Random Forest and Logistic Regression Model</li>
+  <li>SAS procedures and Python Scikit-Learn Library knowledge</li>
+  <li>Microsoft Office such as Word, Excel and Power Point<br/> </li>
+</ul> 
+
+[[4]]
+<ul>
+  <li>Strong problem-solving and analytical skills</li>
+  <li>Knowledge of basic to intermediate Python/SAS Programming skills</li>
+  <li>Knowledge of running regression in Python Scikit Library and SAS Studio</li>
+  <li>Knowledge of integrating data for analysis</li>
+</ul> 
+
+[[5]]
+<ul class="job-meta__list"><!-- ko foreach: jobDetailsInfoItems --><!-- ko component: { name: 'job-meta-item', params: $data } --><li class="job-meta__item">
+    <!-- ko component: { name: componentName, params: componentData } --><span class="job-meta__title" data-bind="text: name">Job Identification</span>
+<span class="job-meta__subitem" data-bind="text: value">2502487</span>
+<!-- /ko -->
+</li>
+<!-- /ko -->
+                        
+                        <!-- ko component: { name: 'job-meta-item', params: $data } --><li class="job-meta__item">
+    <!-- ko component: { name: componentName, params: componentData } --><span class="job-meta__title" data-bind="text: name">Job Category</span>
+<span class="job-meta__subitem" data-bind="text: value">General Administration</span>
+<!-- /ko -->
+</li>
+<!-- /ko -->
+                        
+                        <!-- ko component: { name: 'job-meta-item', params: $data } --><li class="job-meta__item">
+    <!-- ko component: { name: componentName, params: componentData } --><span class="job-meta__title" data-bind="text: name">Posting Date</span>
+<span class="job-meta__subitem" data-bind="text: value">02/27/2025, 01:33 PM</span>
+<!-- /ko -->
+</li>
+<!-- /ko -->
+                        
+                        <!-- ko component: { name: 'job-meta-item', params: $data } --><li class="job-meta__item">
+    <!-- ko component: { name: componentName, params: componentData } --><span class="job-meta__title job-meta__title--locations" data-bind="text: name">Locations</span>
+<span class="job-meta__subitem">
+    <span class="job-meta__locations">
+        <!-- ko foreach: value -->
+        <span class="job-meta__pin-item">
+            <em class="job-meta__pin-icon"/>
+            <!-- ko text: $data -->100 Gundy Drive, Reading, PA, 19607, US<!-- /ko -->
+        </span>
+        <!-- /ko -->
+    </span>
+    <!-- ko if: workplaceTypeName --><!-- /ko -->
+</span>
+<!-- /ko -->
+</li>
+<!-- /ko -->
+                        
+                        <!-- ko component: { name: 'job-meta-item', params: $data } --><li class="job-meta__item">
+    <!-- ko component: { name: componentName, params: componentData } --><span class="job-meta__title" data-bind="text: name">Job Schedule</span>
+<span class="job-meta__subitem" data-bind="text: value">Full time</span>
+<!-- /ko -->
+</li>
+<!-- /ko -->
+                        <!-- /ko -->
+                    </ul> 
+
+[[6]]
+<ul data-bind="class: isList() ? 'jobs-list__list' : 'jobs-grid__list'" class="jobs-list__list">
+  <!-- ko foreach: { data: pageData().similarJobsState().requisitions, as: 'job' } -->
+  <!-- /ko -->
+</ul> 
+
+[[7]]
+<ul class="app-menu__links" role="menu" data-bind="click: onLinkClicked.bind($component)"><!-- ko foreach: {data: links, as: 'link'} --><li class="app-menu__item" role="menuitem">
+                    <!-- ko if: link.url === $parent.getCookieConsentIdentifier() --><!-- /ko -->
+                    <!-- ko if: link.url !== $parent.getCookieConsentIdentifier() -->
+                    <a data-bind="attr: { href:  link.url }, text: link.text" href="https://penske.jobs">Penske Careers Website</a>
+                    <!-- /ko -->
+
+                    <!-- ko if: link.sublinks.length --><!-- /ko -->
+                </li>
+                <!-- /ko -->
+            </ul> 
+
+attr(,"class")
+[1] "XMLNodeSet"
+[47:21] 63> hjp$requestHeaders[[5]]
+                                                                                                                              Host 
+                                                                                                              "appsapi.monster.io" 
+                                                                                                                        User-Agent 
+                                            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0" 
+                                                                                                                            Accept 
+                                                                                                                "application/json" 
+                                                                                                                   Accept-Language 
+                                                                                                                  "en-US,en;q=0.5" 
+                                                                                                                   Accept-Encoding 
+                                                                                                         "gzip, deflate, br, zstd" 
+                                                                                                               x-datadome-clientid 
+"llKbqJ6UT4E3WBEQaLnQZ9oXQ6GQScPPGLOzHxHxi_IkAv8Z5pPZwHYop62n2H_O1ADsrzHSIYUwdubHtz8QRGwyOs1zxWs7A5l6jSZUuV0msdPXTZYIjo8QdKqLwXc8" 
+                                                                                                                      Content-Type 
+                                                                                                 "application/json; charset=utf-8" 
+                                                                                                                 request-starttime 
+                                                                                                                   "1747847763693" 
+                                                                                                                    Content-Length 
+                                                                                                                             "406" 
+                                                                                                                            Origin 
+                                                                                                         "https://www.monster.com" 
+                                                                                                                               DNT 
+                                                                                                                               "1" 
+                                                                                                                           Sec-GPC 
+                                                                                                                               "1" 
+                                                                                                                        Connection 
+                                                                                                                      "keep-alive" 
+                                                                                                                           Referer 
+                                                                                                        "https://www.monster.com/" 
+                                                                                                                    Sec-Fetch-Dest 
+                                                                                                                           "empty" 
+                                                                                                                    Sec-Fetch-Mode 
+                                                                                                                            "cors" 
+                                                                                                                    Sec-Fetch-Site 
+                                                                                                                      "cross-site" 
+                                                                                                                            Pragma 
+                                                                                                                        "no-cache" 
+                                                                                                                     Cache-Control 
+                                                                                                                        "no-cache" 
+                                                                                                                                TE 
+                                                                                                                        "trailers" 
+[03:31] 64> hjp$postData[[5]]
+$mimeType
+[1] "application/json; charset=utf-8"
+
+$params
+list()
+
+$text
+[1] "{\"jobQuery\":{\"query\":\"Data Scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":0,\"pageSize\":18,\"includeJobs\":[]}"
+
+[03:52] 65> u = hjp$url[5]
+[06:12] 66> body = hjp$postData[[5]]$text
+[06:24] 67> names(hjp$requestHeaders)
+NULL
+[06:59] 68> names(hjp$requestHeaders[[5]])
+ [1] "Host"                "User-Agent"          "Accept"             
+ [4] "Accept-Language"     "Accept-Encoding"     "x-datadome-clientid"
+ [7] "Content-Type"        "request-starttime"   "Content-Length"     
+[10] "Origin"              "DNT"                 "Sec-GPC"            
+[13] "Connection"          "Referer"             "Sec-Fetch-Dest"     
+[16] "Sec-Fetch-Mode"      "Sec-Fetch-Site"      "Pragma"             
+[19] "Cache-Control"       "TE"                 
+[07:03] 69> hjp$requestHeaders[[5]][c(7, 9)]
+                     Content-Type                    Content-Length 
+"application/json; charset=utf-8"                             "406" 
+[07:29] 70> #hdr = c("Content-Type" = "application/json; charset=utf-8", "Content-Length" = 
+[07:29] 70> nchar(body)
+[1] 406
+[08:03] 71> hdr = c("Content-Type" = "application/json; charset=utf-8", "Content-Length" = nchar(body))
+[08:12] 72> damon = httpPOST(u, postFields = body, httpheaders = hdr, verbose = TRUE)
+Error in httpPOST(u, postFields = body, httpheaders = hdr, verbose = TRUE) : 
+  could not find function "httpPOST"
+No suitable frames for recover()
+[08:12] 72> library(RCurl)
+[08:52] 73> damon = httpPOST(u, postFields = body, httpheaders = hdr, verbose = TRUE)
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.103, 3.169.183.35, 3.169.183.8, 3.169.183.39
+*   Trying 3.169.183.103:443...
+* Connected to appsapi.monster.io (3.169.183.103) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [accept: */*]
+* [HTTP/2] [1] [content-length: 406]
+* [HTTP/2] [1] [content-type: application/x-www-form-urlencoded]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+Accept: */*
+Content-Length: 406
+Content-Type: application/x-www-form-urlencoded
+
+* upload completely sent off: 406 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 488
+< server: CloudFront
+< date: Thu, 22 May 2025 19:08:55 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: *
+< x-datadome-cid: AHrlqAAAAAMACkot3Wnr6EIAqJZsfg==
+< x-dd-b: 2
+< set-cookie: datadome=DKCISCOsuTvU4KkEW20_sLZgtb4FLnZ6SBcoFLRlH473eQ64drXRFf~UXKqdPlUmR8bj4J_p3_9plZKb5~Nn0RvXosUYsQ_L_MIgFHdWTRaxEtwK94N9_c7wV1ryz~GL; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 edc643c7c426bec36e205453aa531064.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: m2en_qErfaSgg2kfrNWdcKgIO0A-J2NgTTZpwgNwuqR-bH0y28bWsA==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+In addition: Warning messages:
+1: In mapCurlOptNames(names(.els), asNames = TRUE) :
+  Unrecognized CURL options: httpheaders
+2: In mapCurlOptNames(names(.els), asNames = TRUE) :
+  Unrecognized CURL options: httpheaders
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheaders = hdr, verbose = TRUE)
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 0
+[08:52] 73> damon = httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE)
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.103, 3.169.183.35, 3.169.183.8, 3.169.183.39
+*   Trying 3.169.183.103:443...
+* Connected to appsapi.monster.io (3.169.183.103) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [accept: */*]
+* [HTTP/2] [1] [content-type: application/json; charset=utf-8]
+* [HTTP/2] [1] [content-length: 406]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+Accept: */*
+Content-Type: application/json; charset=utf-8
+Content-Length: 406
+
+* upload completely sent off: 406 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 488
+< server: CloudFront
+< date: Thu, 22 May 2025 19:09:12 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: *
+< x-datadome-cid: AHrlqAAAAAMAc1Isqv4dX60AqJZsfg==
+< x-dd-b: 2
+< set-cookie: datadome=GBbncuzKvbbJBmJNh1p4K~T9mclbFRoB3geVMWt06K7WFrK_ku88raaHE6XuJBaXrDnvofMXXDOO2sQL~jDhFxJPcNHvNcDGKM5XrffUnXOa6Fpz6OM3EbdMDnWh9sHX; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 29474fd3a24c6552dfdc04ee03c03aa2.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: LMz1XB4fhp__68eos0bYVxoKbju1OnofgPMpEmgir-TPGYmepYFqCQ==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE)
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 0
+[08:52] 73> u
+[1] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[10:34] 74> b = '{"jobQuery":{"query":"data scientist","locations":[{"country":"us","address":"Davis, CA","radius":{"unit":"mi","value":20}}]},"jobAdsRequest":{"position":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"placement":{"channel":"WEB","location":"JobSearchPage","property":"monster.com","type":"JOB_SEARCH","view":"SPLIT"}},"fingerprintId":"z3a27c81abee3bbf53773af8339d47aa6","offset":0,"pageSize":18,"includeJobs":[]}'
+[11:02] 75> u = "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[11:21] 76> body = b
+[11:35] 77> nchar(body)
+[1] 413
+[11:38] 78> hdr = c("Content-Type" = "application/json; charset=utf-8", "Content-Length" = nchar(body))
+[11:52] 79> 
+[11:52] 79> damon = httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE)
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.39, 3.169.183.8, 3.169.183.35, 3.169.183.103
+*   Trying 3.169.183.39:443...
+* Connected to appsapi.monster.io (3.169.183.39) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [accept: */*]
+* [HTTP/2] [1] [content-type: application/json; charset=utf-8]
+* [HTTP/2] [1] [content-length: 413]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+Accept: */*
+Content-Type: application/json; charset=utf-8
+Content-Length: 413
+
+* upload completely sent off: 413 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 488
+< server: CloudFront
+< date: Thu, 22 May 2025 19:12:05 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: *
+< x-datadome-cid: AHrlqAAAAAMADxE3ZNUA8p0AqJZsfg==
+< x-dd-b: 2
+< set-cookie: datadome=9C96qUfIX13oXagAOmU9~kWHJpr~KWlR4apZD3NoJauO~OTvombt0zXSjeaKc6WJWEIfo6GzXo1t_mGlmP5788SQl03c51D0DKd0p~s~t8fjGbXdiPbin6U8M6GFL12k; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 05704fecd1992557082ae04fd0558b5e.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: Wef5Hpbf8QkpKQ6NnFwrKLws2aJWFWTf2jgqCftWxbUBeNq5mVExzA==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE)
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 0
+[11:52] 79> u
+[1] "https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj"
+[12:44] 80> hdr = c("Content-Type" = "application/json; charset=utf-8", "Content-Length" = nchar(body), Accept = "application/json")
+[13:14] 81> userAgent
+Error: object 'userAgent' not found
+No suitable frames for recover()
+[13:14] 81> userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0"
+[13:28] 82> damon = httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgent)
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.39, 3.169.183.8, 3.169.183.35, 3.169.183.103
+*   Trying 3.169.183.39:443...
+* Connected to appsapi.monster.io (3.169.183.39) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0]
+* [HTTP/2] [1] [content-type: application/json; charset=utf-8]
+* [HTTP/2] [1] [content-length: 413]
+* [HTTP/2] [1] [accept: application/json]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0
+Content-Type: application/json; charset=utf-8
+Content-Length: 413
+Accept: application/json
+
+* upload completely sent off: 413 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 488
+< server: CloudFront
+< date: Thu, 22 May 2025 19:13:43 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: *
+< x-datadome-cid: AHrlqAAAAAMARcESoaPRMqUAqJZsfg==
+< x-dd-b: 2
+< set-cookie: datadome=S7PGzaoQE0a7RrOCsREq42_RCHZ5xYi40iXpErA1HbFSzLVtti5BLssrC8JLSjXDFCqPMz9IAOZ_PSH5gzA7VIhbiT5seTTygGRbPb3Hldmyt3G700NDTbASlFwe0uXd; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 b735cef950dccc7c59398fa8df6c4f7e.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: BXMpcw00V_wGfEkBdceP8MVZyhHx-ROPgxZUyxvLSns9NqkJO2upCw==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgen
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 0
+[13:28] 82> damon = httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgent, referrer = "https://www.monster.com/")
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.39, 3.169.183.8, 3.169.183.35, 3.169.183.103
+*   Trying 3.169.183.39:443...
+* Connected to appsapi.monster.io (3.169.183.39) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0]
+* [HTTP/2] [1] [content-type: application/json; charset=utf-8]
+* [HTTP/2] [1] [content-length: 413]
+* [HTTP/2] [1] [accept: application/json]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0
+Content-Type: application/json; charset=utf-8
+Content-Length: 413
+Accept: application/json
+
+* upload completely sent off: 413 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 488
+< server: CloudFront
+< date: Thu, 22 May 2025 19:14:35 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: *
+< x-datadome-cid: AHrlqAAAAAMA-_I9tPMr_b4AqJZsfg==
+< x-dd-b: 2
+< set-cookie: datadome=vgKolF3JvbHhc97n_fbaRzUrF7GynCcd3Y0nX4az0xGr7v75MI6jrVoSdQV3HpM7ppeX~izVlgThGn9JqjvKHGq7ogVqxCz~fGTZ7GGd7k_HLe6_FKl4V4CXCVed3mdQ; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 7dbcbf3457f77b741952e31c6826a8dc.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: fbNpDGfx_muWcBKR_4ygERnf3BLdZHrg3U5f3ezIt9ZOCEh7dIKbEA==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+In addition: Warning messages:
+1: In mapCurlOptNames(names(.els), asNames = TRUE) :
+  Unrecognized CURL options: referrer
+2: In mapCurlOptNames(names(.els), asNames = TRUE) :
+  Unrecognized CURL options: referrer
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgen
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 0
+[13:28] 82> damon = httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgent, referer = "https://www.monster.com/")
+* Host appsapi.monster.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 3.169.183.39, 3.169.183.8, 3.169.183.35, 3.169.183.103
+*   Trying 3.169.183.39:443...
+* Connected to appsapi.monster.io (3.169.183.39) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.monster.io
+*  start date: May  8 00:00:00 2025 GMT
+*  expire date: Jun  6 23:59:59 2026 GMT
+*  subjectAltName: host "appsapi.monster.io" matched cert's "*.monster.io"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://appsapi.monster.io/jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: appsapi.monster.io]
+* [HTTP/2] [1] [:path: /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj]
+* [HTTP/2] [1] [user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0]
+* [HTTP/2] [1] [referer: https://www.monster.com/]
+* [HTTP/2] [1] [content-type: application/json; charset=utf-8]
+* [HTTP/2] [1] [content-length: 413]
+* [HTTP/2] [1] [accept: application/json]
+> POST /jobs-svx-service/v2/monster/search-jobs/samsearch/en-US?apikey=hkp1igv13sjt7ltv5kfdhjpj HTTP/2
+Host: appsapi.monster.io
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0
+Referer: https://www.monster.com/
+Content-Type: application/json; charset=utf-8
+Content-Length: 413
+Accept: application/json
+
+* upload completely sent off: 413 bytes
+< HTTP/2 403 
+< content-type: application/json;charset=utf-8
+< content-length: 493
+< server: CloudFront
+< date: Thu, 22 May 2025 19:14:44 GMT
+< x-datadome: protected
+< accept-ch: Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
+< charset: utf-8
+< cache-control: max-age=0, private, no-cache, no-store, must-revalidate
+< pragma: no-cache
+< access-control-allow-credentials: true
+< access-control-expose-headers: x-dd-b, x-set-cookie
+< access-control-allow-origin: https://www.monster.com
+< x-datadome-cid: AHrlqAAAAAMAqT3OKTTnrKUAqJZsfg==
+< x-dd-b: 3
+< set-cookie: datadome=Mm9SDsHVP4FWFy5stK6v5udbykartsNV~HcccQNS7E2GUxG3lEZIao61PjmnJrTl6vsmDhWsB5ROBMK_rQgllJ4j4tcvc4Uxy85BsBk57gYtwZdal9qB0QvuiG0cpQ4L; Max-Age=31536000; Domain=.monster.io; Path=/; Secure; SameSite=Lax
+< x-cache: LambdaGeneratedResponse from cloudfront
+< via: 1.1 ad0f81beb11a40b80a59b548e3794d00.cloudfront.net (CloudFront)
+< x-amz-cf-pop: SFO53-P7
+< x-amz-cf-id: mgbDgk5huaDwP1mRIhi8uFE86rRLBwETTGrSsDllAEbrljMV5SMo_g==
+< 
+* Connection #0 to host appsapi.monster.io left intact
+Error: 
+
+Enter a frame number, or 0 to exit   
+
+1: httpPOST(u, postFields = body, httpheader = hdr, verbose = TRUE, useragent = userAgen
+2: getURLContent(url, .opts = list(customrequest = "POST", ...), curl = curl, post = 1)
+3: stop.if.HTTP.error(http.header, header$value())
+
+Selection: 3
+Called from: stop.if.HTTP.error(http.header, header$value())
+Browse[1]> ls()
+[1] "body"        "err"         "http.header" "klass"      
+Browse[1]> err
+<Forbidden: 
+>
+Browse[1]> body
+[1] "{\"url\":\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAqT3OKTTnrKUAqJZsfg==&cid=Mm9SDsHVP4FWFy5stK6v5udbykartsNV~HcccQNS7E2GUxG3lEZIao61PjmnJrTl6vsmDhWsB5ROBMK_rQgllJ4j4tcvc4Uxy85BsBk57gYtwZdal9qB0QvuiG0cpQ4L&referer=http%3A%2F%2Fappsapi.monster.io%2Fjobs-svx-service%2Fv2%2Fmonster%2Fsearch-jobs%2Fsamsearch%2Fen-US%3Fapikey%3Dhkp1igv13sjt7ltv5kfdhjpj&hash=A7B2DA82190597376E01B53F7A9246&t=it&s=45798&e=0c4bf45c76527ccfd970708c5439d9a8c9f649aaad7d4d24fba604f16c9b7534\"}"
+attr(,"Content-Type")
+[1] "application/json" "charset=utf-8"   
+Browse[1]> Q
+[14:56] 85> body
+[1] "{\"jobQuery\":{\"query\":\"data scientist\",\"locations\":[{\"country\":\"us\",\"address\":\"Davis, CA\",\"radius\":{\"unit\":\"mi\",\"value\":20}}]},\"jobAdsRequest\":{\"position\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],\"placement\":{\"channel\":\"WEB\",\"location\":\"JobSearchPage\",\"property\":\"monster.com\",\"type\":\"JOB_SEARCH\",\"view\":\"SPLIT\"}},\"fingerprintId\":\"z3a27c81abee3bbf53773af8339d47aa6\",\"offset\":0,\"pageSize\":18,\"includeJobs\":[]}"
+[15:42] 86> 
