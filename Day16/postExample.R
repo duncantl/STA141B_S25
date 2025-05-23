@@ -15,3 +15,18 @@ ans = httpPOST(u, httpheader = headers,
                verbose = TRUE)
 
 res = fromJSON(ans)
+
+
+######################
+#
+# Get both the header and the body of the response
+
+ans = getURLContent(u, httpheader = headers,
+                    postFields = body,
+                    customrequest = "POST",
+                    verbose = TRUE,
+                    header = TRUE)
+
+ans$header
+
+ans$body$body
