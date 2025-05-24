@@ -1,4 +1,4 @@
-STA141B, Spring Quarter 2025
+1STA141B, Spring Quarter 2025
 
 Instructor: Duncan Temple Lang
 
@@ -6,7 +6,23 @@ Instructor: Duncan Temple Lang
 Piazza [link](https://piazza.com/class/m8vu0p011kn5a2)
 
 
+One time, in a terminal
+```
+git clone https://github.com/duncantl/STA141B_S25.git
+```
+
+Then, any time you want to get any updates - new files, changes to existing ones - 
+```
+cd STA141B_S25
+git pull
+```
+
+
+
+
 + [Organizing Code](OrganizingCode/README.md)
+
+
 
 
 
