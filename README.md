@@ -6,7 +6,14 @@ Instructor: Duncan Temple Lang
 Piazza [link](https://piazza.com/class/m8vu0p011kn5a2)
 
 
-One time, in a terminal
+### Local copies of all the files in the class repository 
+
+So you can view the files in your browser, or use directly in R, etc.
+you 
++ clone the repository into a directory on your machine
++ pull any updates as often as you want.
+
+In a terminal, do this once
 ```
 git clone https://github.com/duncantl/STA141B_S25.git
 ```
@@ -17,6 +24,8 @@ cd STA141B_S25
 git pull
 ```
 
+
+# Files
 
 
 
