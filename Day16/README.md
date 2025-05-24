@@ -19,5 +19,8 @@
 
 + [Download selenium server](https://selenium-release.storage.googleapis.com/index.html)
 
-
++ [Example R session] (example.session)
+   + marine traffic
+   + postExample.R
+   
 

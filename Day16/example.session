@@ -1,0 +1,230 @@
+]0;Day15~/sta141b/Public/Day15> R
+
+R Under development (unstable) (2025-03-26 r88055) -- "Unsuffered Consequences"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin23.6.0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+PID = 45549 
+Time = 2025-05-23 16:58:37 
+Dir = /Users/duncan/Classes/Davis/STA141B_24_25/Public/Day15 
+1> library(RCurl)
+[58:45] 2> u = "https://www.marinetraffic.com/getData/get_data_json_4/z:2/X:1/Y:0/station:0"
+k = "_cfuvid=xZ4djtSUbPXvPexJ1GUSdOhQ8eSczoshNk4fuL0ssy8-1747959595825-0.0.1.1-604800000; vTo=1; cf_clearance=By9dlIshrf4SVwEWLfAbuuKiU04t7N.DGHTb3OWGWEQ-1748044150-1.2.1.1-nwuhxIJkhja3a3fIyWv9Q6HwPeNWRVINb7bgVYhl3YBl1rAdRXKHn38tmkdaW_KLFubA8QBSut03JAuFubGPukr53wGtqQH3EhQpHlQLfNPbpIPZxocR67_gSVe1zQ1.Gpi1eIdZX9f5Ji.CgTGyPIKw8CTLSrJ347eJvWrdaFhCKPDopXUgKhH2BiX5ml6iQTK9QtGrO7gtK0.coxTGfOi3raKT2ADujx5UcmrWhLxifXvLGQibmWVLLYqe09YCifMUEWeJ9Ggheqc1KWcQ.JloK0lOIptIVnnqCl72QD8ttOZADuFGEpXv3LJjCW6Iu4TOTNCX2yX0RB9J4YtXp2OFh8sxCJkwyVjTGrE9RWI; __cf_bm=btqNoS7EDSgRpx8_dys_Xhg9QcYph2h9yCY3nsrEW24-1748044149-1.0.1.1-qoo.fq30Ie4DWpnVG5vz65kKIhZgrNU2BuTgZ9EQQQMQhpH4QU8IWZxvICQzO6d8pGvSdczpkPEzI0KHuiZR_cRA370Utxp8T4tND_Gzv.4"
+
+ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0"
+
+[00:47] 3> [00:47] 4> [00:47] 4> [00:47] 5> [00:47] 5> 
+[00:47] 5> tmp = getURLContent(u, cookie = cookie, useragent = ua, verbose = TRUE)
+* Host www.marinetraffic.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 104.18.8.70, 104.18.9.70
+*   Trying 104.18.8.70:443...
+* Connected to www.marinetraffic.com (104.18.8.70) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=marinetraffic.com
+*  start date: May 22 17:58:29 2025 GMT
+*  expire date: Aug 20 18:58:27 2025 GMT
+*  subjectAltName: host "www.marinetraffic.com" matched cert's "*.marinetraffic.com"
+*  issuer: C=US; O=Google Trust Services; CN=WE1
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://www.marinetraffic.com/getData/get_data_json_4/z:2/X:1/Y:0/station:0
+* [HTTP/2] [1] [:method: GET]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: www.marinetraffic.com]
+* [HTTP/2] [1] [:path: /getData/get_data_json_4/z:2/X:1/Y:0/station:0]
+* [HTTP/2] [1] [user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0]
+* [HTTP/2] [1] [accept: */*]
+* [HTTP/2] [1] [cookie: ]
+> GET /getData/get_data_json_4/z:2/X:1/Y:0/station:0 HTTP/2
+Host: www.marinetraffic.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0
+Accept: */*
+Cookie: 
+
+* Request completely sent off
+< HTTP/2 200 
+< date: Sat, 24 May 2025 00:00:54 GMT
+< content-type: application/json; charset=UTF-8
+< x-ratelimit-limit-minute: 60000
+< x-ratelimit-remaining-minute: 59993
+< ratelimit-remaining: 59993
+< ratelimit-reset: 27
+< ratelimit-limit: 60000
+< expires: Sat, 24 May 2025 00:09:33 GMT
+< cache-control: public, max-age=3600
+< access-control-allow-origin: http://www.marinetraffic.com
+< access-control-allow-credentials: true
+< last-modified: Fri, 23 May 2025 23:08:33 GMT
+< x-kong-upstream-status: 200
+< strict-transport-security: max-age=15552000; includeSubDomains
+< x-content-type-options: nosniff
+< x-kong-upstream-latency: 210
+< x-kong-proxy-latency: 0
+< x-kong-request-id: a6023102dfdcfd3ca7f2e109a448fb1f
+< cf-cache-status: HIT
+< set-cookie: __cf_bm=CzWy_yZYTVhW7k9gJVmjcmV5bRbAW2ZtlZ9NpejDvs8-1748044854-1.0.1.1-UukO9jy40I0MFUgH2vZatwea.J7DYJcN..8jHyyXk6apaBV.NjKUcWyQHeM.sAcEKpLQ6v0ibT8u3O0ESayOJSJO5vcsb3591Pwtm3KOvjw; path=/; expires=Sat, 24-May-25 00:30:54 GMT; domain=.marinetraffic.com; HttpOnly; Secure; SameSite=None
+< set-cookie: _cfuvid=2NOpF_5TP00n61gb0Oov1k.An0AiBms9C343hQMgwQk-1748044854758-0.0.1.1-604800000; path=/; domain=.marinetraffic.com; HttpOnly; Secure; SameSite=None
+< server: cloudflare
+< cf-ray: 944883f2784a2eff-LAX
+< alt-svc: h3=":443"; ma=86400
+< 
+* Connection #0 to host www.marinetraffic.com left intact
+[00:55] 6> class(tmp)
+[1] "character"
+[02:24] 7> length(tmp)
+[1] 1
+[02:28] 8> nchar(tmp)
+[1] 633039
+[02:34] 9> substring(tmp, 1, 1000)
+[1] "{\"type\":1,\"data\":{\"rows\":[{\"LAT\":\"30.062746\",\"LON\":\"47.933319\",\"SPEED\":\"0\",\"COURSE\":\"305\",\"HEADING\":\"142\",\"ELAPSED\":\"2\",\"DESTINATION\":\"SADMN>IQUQR\",\"FLAG\":\"LR\",\"LENGTH\":\"366\",\"ROT\":\"0\",\"SHIPNAME\":\"HMM GAON\",\"SHIPTYPE\":\"7\",\"SHIP_ID\":\"6501094\",\"WIDTH\":\"51\",\"L_FORE\":\"112\",\"W_LEFT\":\"18\",\"DWT\":\"160927\",\"GT_SHIPTYPE\":\"11\"},{\"LAT\":\"35.496246\",\"LON\":\"24.146961\",\"SPEED\":\"0\",\"COURSE\":\"15\",\"HEADING\":\"88\",\"ELAPSED\":\"2\",\"DESTINATION\":\"ORDERS\",\"FLAG\":\"US\",\"LENGTH\":\"183\",\"ROT\":\"0\",\"SHIPNAME\":\"STENA IMPECCABLE\",\"SHIPTYPE\":\"8\",\"SHIP_ID\":\"4829596\",\"WIDTH\":\"32\",\"L_FORE\":\"144\",\"W_LEFT\":\"20\",\"DWT\":\"49737\",\"GT_SHIPTYPE\":\"88\"},{\"LAT\":\"26.541618\",\"LON\":\"54.910759\",\"SPEED\":\"0\",\"COURSE\":\"17\",\"HEADING\":\"238\",\"ELAPSED\":\"2\",\"DESTINATION\":\"DUBAI HAMRYA PORT\",\"FLAG\":\"TG\",\"LENGTH\":\"105\",\"ROT\":\"0\",\"SHIPNAME\":\"PLUTO\",\"SHIPTYPE\":\"7\",\"SHIP_ID\":\"9119294\",\"WIDTH\":\"21\",\"L_FORE\":\"6\",\"W_LEFT\":\"5\",\"DWT\":\"5002\",\"GT_SHIPTYPE\":\"139\"},{\"LAT\":\"10.924315\",\"LON\":\"101.74551\",\"SPEED\":\"155\",\"COURSE\":\"144\",\"HEADING\":\"146\",\"ELAPSED\":\"2\",\""
+attr(,"Content-Type")
+[1] "application/json" "charset=UTF-8"   
+[02:48] 10> cat(substring(tmp, 1, 1000))
+{"type":1,"data":{"rows":[{"LAT":"30.062746","LON":"47.933319","SPEED":"0","COURSE":"305","HEADING":"142","ELAPSED":"2","DESTINATION":"SADMN>IQUQR","FLAG":"LR","LENGTH":"366","ROT":"0","SHIPNAME":"HMM GAON","SHIPTYPE":"7","SHIP_ID":"6501094","WIDTH":"51","L_FORE":"112","W_LEFT":"18","DWT":"160927","GT_SHIPTYPE":"11"},{"LAT":"35.496246","LON":"24.146961","SPEED":"0","COURSE":"15","HEADING":"88","ELAPSED":"2","DESTINATION":"ORDERS","FLAG":"US","LENGTH":"183","ROT":"0","SHIPNAME":"STENA IMPECCABLE","SHIPTYPE":"8","SHIP_ID":"4829596","WIDTH":"32","L_FORE":"144","W_LEFT":"20","DWT":"49737","GT_SHIPTYPE":"88"},{"LAT":"26.541618","LON":"54.910759","SPEED":"0","COURSE":"17","HEADING":"238","ELAPSED":"2","DESTINATION":"DUBAI HAMRYA PORT","FLAG":"TG","LENGTH":"105","ROT":"0","SHIPNAME":"PLUTO","SHIPTYPE":"7","SHIP_ID":"9119294","WIDTH":"21","L_FORE":"6","W_LEFT":"5","DWT":"5002","GT_SHIPTYPE":"139"},{"LAT":"10.924315","LON":"101.74551","SPEED":"155","COURSE":"144","HEADING":"146","ELAPSED":"2","[02:59] 11> 
+[02:59] 11> library(RJSONIO)
+[03:18] 12> d = fromJSON(tmp)
+[03:27] 13> names(d)
+[1] "type" "data"
+[04:05] 14> sapply(d, class)
+     type      data 
+"numeric"    "list" 
+[04:11] 15> sapply(d, length)
+type data 
+   1    2 
+[04:30] 16> d$type
+[1] 1
+[04:35] 17> sapply(d$data, class)
+     rows areaShips 
+   "list" "numeric" 
+[04:49] 18> sapply(d$data, length)
+     rows areaShips 
+     2194         1 
+[05:04] 19> r = d$data$rows
+[05:38] 20> r[[1]
++ ]
+          LAT           LON         SPEED        COURSE       HEADING       ELAPSED   DESTINATION          FLAG        LENGTH 
+  "30.062746"   "47.933319"           "0"         "305"         "142"           "2" "SADMN>IQUQR"          "LR"         "366" 
+          ROT      SHIPNAME      SHIPTYPE       SHIP_ID         WIDTH        L_FORE        W_LEFT           DWT   GT_SHIPTYPE 
+          "0"    "HMM GAON"           "7"     "6501094"          "51"         "112"          "18"      "160927"          "11" 
+[05:40] 21> length(r[[1]])
+[1] 18
+[05:53] 22> table(sapply(r, length))
+
+  12   13   15   16   17   18 
+ 641    1   45   31  246 1230 
+[06:11] 23> u = "https://httpbin.org/post"
+
+bodyData = list(x = 1, y = 2:4, string = "this is a string")
+body = toJSON(bodyData)
+
+headers = c('Content-Type' = 'application/json',
+            'Content-Length' = nchar(body)
+            )
+
+[08:39] 24> [08:39] 24> [08:39] 25> [08:39] 26> [08:39] 26> + + [08:39] 27> [08:39] 27> 
+[08:39] 27> ans = httpPOST(u, httpheader = headers,
+               postFields = body,
+               verbose = TRUE)
++ + * Host httpbin.org:443 was resolved.
+* IPv6: (none)
+* IPv4: 54.159.209.11, 52.7.80.244, 54.166.245.7, 18.211.192.27
+*   Trying 54.159.209.11:443...
+* Connected to httpbin.org (54.159.209.11) port 443
+* ALPN: curl offers h2,http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=httpbin.org
+*  start date: Aug 20 00:00:00 2024 GMT
+*  expire date: Sep 17 23:59:59 2025 GMT
+*  subjectAltName: host "httpbin.org" matched cert's "httpbin.org"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://httpbin.org/post
+* [HTTP/2] [1] [:method: POST]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: httpbin.org]
+* [HTTP/2] [1] [:path: /post]
+* [HTTP/2] [1] [accept: */*]
+* [HTTP/2] [1] [content-type: application/json]
+* [HTTP/2] [1] [content-length: 67]
+> POST /post HTTP/2
+Host: httpbin.org
+Accept: */*
+Content-Type: application/json
+Content-Length: 67
+
+* upload completely sent off: 67 bytes
+< HTTP/2 200 
+< date: Sat, 24 May 2025 00:08:44 GMT
+< content-type: application/json
+< content-length: 525
+< server: gunicorn/19.9.0
+< access-control-allow-origin: *
+< access-control-allow-credentials: true
+< 
+* Connection #0 to host httpbin.org left intact
+[08:44] 28> ans
+[1] "{\n  \"args\": {}, \n  \"data\": \"{\\n \\\"x\\\":        1,\\n\\\"y\\\": [ 2, 3, 4 ],\\n\\\"string\\\": \\\"this is a string\\\" \\n}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Content-Length\": \"67\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"X-Amzn-Trace-Id\": \"Root=1-68310e0c-67ef9dca50f786e1447e187b\"\n  }, \n  \"json\": {\n    \"string\": \"this is a string\", \n    \"x\": 1, \n    \"y\": [\n      2, \n      3, \n      4\n    ]\n  }, \n  \"origin\": \"24.7.88.62\", \n  \"url\": \"https://httpbin.org/post\"\n}\n"
+attr(,"Content-Type")
+[1] "application/json"
+[09:08] 29> fromJSON(ans)
+$args
+named list()
+
+$data
+[1] "{\n \"x\":        1,\n\"y\": [ 2, 3, 4 ],\n\"string\": \"this is a string\" \n}"
+
+$files
+named list()
+
+$form
+named list()
+
+$headers
+                                    Accept                             Content-Length                               Content-Type 
+                                     "*/*"                                       "67"                         "application/json" 
+                                      Host                            X-Amzn-Trace-Id 
+                             "httpbin.org" "Root=1-68310e0c-67ef9dca50f786e1447e187b" 
+
+$json
+$json$string
+[1] "this is a string"
+
+$json$x
+[1] 1
+
+$json$y
+[1] 2 3 4
+
+
+$origin
+[1] "24.7.88.62"
+
+$url
+[1] "https://httpbin.org/post"
+
+[09:23] 30> 
