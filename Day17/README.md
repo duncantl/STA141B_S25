@@ -4,6 +4,9 @@
 + [R session - code and output](Rsession)
 + [R commands](code.R)
 
++ [XPath](https://www.w3schools.com/Xml/xpath_intro.asp)
++ [XPath axes](https://www.w3schools.com/Xml/xpath_axes.asp)
+
 
 ### city-data.com
 
