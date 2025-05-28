@@ -7,6 +7,9 @@
 + [XPath](https://www.w3schools.com/Xml/xpath_intro.asp)
 + [XPath axes](https://www.w3schools.com/Xml/xpath_axes.asp)
 
++ extracting data from a particular city
+  + [Race information](../Day15/cityData2.R)
+
 
 ### city-data.com
 
