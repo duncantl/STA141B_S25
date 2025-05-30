@@ -19,6 +19,17 @@
 
 + [Download selenium server](https://selenium-release.storage.googleapis.com/index.html)
 
++ [Download the geckodriver](https://github.com/mozilla/geckodriver/releases)
+    + For simplicity, put the geckodriver executable in the same directory as the selenium-server-standalone jar file.
+
+# Run
+
+In a shell, start the selenium server in the directory where you have the .jar file and the geckodriver:
+```
+java -jar selenium-server-standalone-3.9.1.jar 
+```
+
+
 + [Example R session] (example.session)
    + marine traffic
    + postExample.R
