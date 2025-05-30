@@ -1,5 +1,14 @@
 ## Day 18
 
++ Recap on 
+   + dynamic HTML documents/content, 
+   + selenium and RSelenium
+   + section titles for task 2
+   + the text and word for task 2
+
++ [Using try and why](try.md)
+
+
 ### Interactive Data Visualization
 
 
@@ -33,6 +42,7 @@
 
 + 3rd plot shows general possibilities
    + but actually could be done with less verbose text.
+
 
 + can create regular plots similar to R's
    + but in HTML & JavaScript
