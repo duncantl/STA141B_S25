@@ -9,6 +9,15 @@
 + [Using try and why](try.md)
 
 
++ [quick, no-frills functions to talk with geckodriver directly](direct.R)
+   + When RSelenium, selenium aren't working on a machine,
+     one can try to run the geckodriver directly (in a shell)
+	 and then use the code in direct.R from within R to 
+	   + connect to the geckodriver via mkSession()
+	   + navigate to a URL
+	   + get the current page's HTML
+   + See the example at the top of the file within the `if(FALSE) {... }`
+
 ### Interactive Data Visualization
 
 
