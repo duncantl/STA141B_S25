@@ -16,11 +16,21 @@ library(ggplot2)
 Row {data-height=100}
 -------------------------------
 
+<p>
 This is content to describe the display.
 It can contain HTML such as <b>bold text</b>
 and <a href="https://pkgs.rstudio.com/flexdashboard/">links</a>.
+</p>
+<br/>
 
-
+<p>
+This example has two widgets that use the same data.frame but are not connected.
+What if we used a SharedData object, .e.g.,
+<pre>
+df = SharedData$new(mpg)
+</pre>
+</p>
+<br/>
 
 Row {data-height=1000}
 -------------------------------------
