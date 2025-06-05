@@ -1,0 +1,30 @@
+<html>
+    <head>
+	<script>
+	 var ctr = 1;
+	 function update() {
+	     console.log('in the call to update()');
+	     var t = document.getElementById('myText');
+	     t.innerHTML = 'Checking ' + ctr;
+	     ctr++;
+	     alert('called alert');
+	 }
+
+	 function documentLoaded(ev) {
+	     console.log("in documentLoaded", ev);
+	 }
+	 
+	</script>
+    </head>	
+    
+    <body>
+
+	<input type="button" onclick="update()" value="Do it">	</input>
+
+	<textarea id="myText"></textarea>
+	<script>
+	 document.addEventListener('DOMContentLoaded', documentLoaded);
+	</script>
+</body>	
+    
+</html>    
