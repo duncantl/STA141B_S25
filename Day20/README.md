@@ -1,5 +1,26 @@
 ## Day 20
 
+### Tables for displaying data
+
++ [DT package](https://rstudio.github.io/DT/)
+  + [dt.R](dt.R)
++ [reactable](https://glin.github.io/reactable/)
+  + `reactable::reactable(mtcars)`
+
+### Additional Useful Approaches
+
++ [crosstalk::SharedData](https://rdrr.io/cran/crosstalk/man/SharedData.html)
++ [plotly::highlight()](https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/highlight)
+
++ htmltools package and `tags$...()` for creating html content.
+   + create HTML content
+   + include widgets directly
+   + `save_html()`
+
+
++ [onRender()](https://www.rdocumentation.org/packages/htmlwidgets/versions/1.6.4/topics/onRender)
+   + Add JavaScript code to be evaluated when a widget is rendered.
+
 ### Examples
 
 + [example 1](eg1.html)
@@ -17,6 +38,11 @@
 
 + Improvements - Control 
    + colors
+   + appearance of highlighted point
+      + change size?
+	  + color
+	  + then reset.
+   + reset the plot to show all and not the currently selected point
    + extra decorations, e.g., Brush, toolbar.
    + need for external files for JavaScript libraries.
 
@@ -27,17 +53,4 @@
   + [Rmd file](flex.Rmd)
 
 
-### Additional Useful Approaches
 
-+ [crosstalk::SharedData](https://rdrr.io/cran/crosstalk/man/SharedData.html)
-+ [plotly::highlight()](https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/highlight)
-
-+ htmltools package and `tags$...()` for creating html content.
-   + create HTML content
-   + include widgets directly
-
-
-+ [onRender()](https://www.rdocumentation.org/packages/htmlwidgets/versions/1.6.4/topics/onRender)
-
-
-+ 
