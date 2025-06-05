@@ -1,0 +1,50 @@
+---
+title: Simple Example of flexdashboard
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+```{r, include = FALSE}
+library(patchwork)
+library(plotly)
+library(htmlwidgets)
+library(DT)
+library(ggplot2)
+```
+
+Row {data-height=100}
+-------------------------------
+
+This is content to describe the display.
+It can contain HTML such as <b>bold text</b>
+and <a href="https://pkgs.rstudio.com/flexdashboard/">links</a>.
+
+
+
+Row {data-height=1000}
+-------------------------------------
+```{r}
+
+
+p <- ggplot(mpg, aes(x=displ, 
+                     y=hwy, 
+                     color=class,
+                     label1 = manufacturer,
+                     label2 = model,
+                     label3 = year)) +
+  geom_point(size = 3) +
+  labs(x = "Engine displacement",
+       y = "Highway Mileage",
+       color = "Car Class") +
+  theme_bw()
+
+ggplotly(p, tooltip = c("label1", "label2", "label3"))
+```
+
+Row {data-height=400}
+---------------------
+
+```{r}
+datatable(mpg)
+```
