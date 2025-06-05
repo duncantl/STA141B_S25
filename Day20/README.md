@@ -9,9 +9,11 @@
 
 ### Additional Useful Approaches
 
++ [crosstalk](https://rstudio.github.io/crosstalk/using.html)
 + [crosstalk::SharedData](https://rdrr.io/cran/crosstalk/man/SharedData.html)
 + [plotly::highlight()](https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/highlight)
-
+   + plotly_click, plotly_doubleclick events - on and off.
+   
 + htmltools package and `tags$...()` for creating html content.
    + create HTML content
    + include widgets directly
@@ -48,6 +50,8 @@
 
 
 ### flexdashboard
+
+Create the HTML display document directly from an Rmd file. (Separate from your report.)
 
 + [flexdashboard example output](flex.html)
   + [Rmd file](flex.Rmd)
