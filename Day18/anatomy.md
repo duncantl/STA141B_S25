@@ -40,9 +40,9 @@ d1 = xmlRoot(doc)[["body"]][["div"]]
 is 
 ```
 <div id="htmlwidget_container">
-<div id="htmlwidget-2a317b4f45f0b2de1503" class="girafe html-widget" style="width:960px;height:500px;">
+  <div id="htmlwidget-2a317b4f45f0b2de1503" class="girafe html-widget" style="width:960px;height:500px;">
 
-</div>
+  </div>
 </div> 
 ```
     + It is a general container with a child `<div>` node for a specific plot/display identified by
