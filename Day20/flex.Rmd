@@ -32,6 +32,12 @@ df = SharedData$new(mpg)
 </p>
 <br/>
 
+<p>
+Note also that this HTML is all on one line and the regular HTML
+paragraphs are not rendered as expected. So there
+are additional layout/rendering layers  we would have to control/override.
+</p>
+
 Row {data-height=1000}
 -------------------------------------
 ```{r}
